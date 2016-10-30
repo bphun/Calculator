@@ -8,165 +8,219 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
-    @IBOutlet weak var clearButton: UIButton!
-    @IBOutlet weak var openParenthesesButton: UIButton!
-    @IBOutlet weak var closeParenthesesButton: UIButton!
-    @IBOutlet weak var divideButton: UIButton!
-    @IBOutlet weak var multiplyButton: UIButton!
-    @IBOutlet weak var subtractButton: UIButton!
-    @IBOutlet weak var addButton: UIButton!
-    @IBOutlet weak var solveButton: UIButton!
-    
-    @IBOutlet weak var sevenButton: UIButton!
-    @IBOutlet weak var eightButton: UIButton!
-    @IBOutlet weak var nineButton: UIButton!
-    @IBOutlet weak var fourButton: UIButton!
-    @IBOutlet weak var fiveButton: UIButton!
-    @IBOutlet weak var sixButton: UIButton!
-    @IBOutlet weak var oneButton: UIButton!
-    @IBOutlet weak var twoButton: UIButton!
-    @IBOutlet weak var threeButton: UIButton!
-    @IBOutlet weak var zeroButton: UIButton!
-    @IBOutlet weak var decimalButton: UIButton!
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet var buttonCollection: [UIButton]!
     
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var operationLabel: UILabel!
+    @IBOutlet weak var operationHistoryTableView: UITableView!
+    
+    var operationHistory = [MathematicalOperation]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let clearButtonLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.clearButtonLongPress(recognizer:)))
-        clearButtonLongPressGestureRecognizer.minimumPressDuration = 0.4
-        
-        let clearButtonTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.clearButtonTap(recognizer:)))
-        
-        for button in buttonCollection {
-            button.layer.borderWidth = 0.28
-            button.layer.borderColor = UIColor.black().withAlphaComponent(0.5).cgColor
-            button.addTarget(self, action: #selector(ViewController.appendCharacter(sender:)), for: .touchUpInside)
+        DispatchQueue.main.async {
+            var finishedCreatingClearButton = false
             
-            if button.currentTitle == "C" {
-                button.addGestureRecognizer(clearButtonLongPressGestureRecognizer)
-                button.addGestureRecognizer(clearButtonTapGestureRecognizer)
-            } else if button.currentTitle == "÷" || button.currentTitle == "×" || button.currentTitle == "−" || button.currentTitle == "+" {
-                button.addTarget(self, action: #selector(ViewController.operatorTapped(sender:)), for: .touchUpInside)
+            self.operationHistoryTableView.delegate = self
+            self.operationHistoryTableView.dataSource = self
+            
+            for button in self.buttonCollection {
+                DispatchQueue.main.async {
+                    UIApplication.shared.statusBarStyle = .lightContent
+                    button.layer.borderWidth = 0.28
+                    button.layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
+                    button.addTarget(self, action: #selector(ViewController.appendCharacter(sender:)), for: .touchUpInside)
+                    
+                    if (!finishedCreatingClearButton) {
+                        if button.currentTitle == "C" {
+                            let clearButtonLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.clearButtonLongPress(recognizer:)))
+                            clearButtonLongPressGestureRecognizer.minimumPressDuration = 0.25
+                            
+                            let clearButtonTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.clearButtonTap(recognizer:)))
+                            
+                            button.addGestureRecognizer(clearButtonLongPressGestureRecognizer)
+                            button.addGestureRecognizer(clearButtonTapGestureRecognizer)
+                            finishedCreatingClearButton = true
+                        }
+                    }
+                }
             }
+            self.buttonCollection.removeAll()
         }
     }
     
     func appendCharacter(sender: UIButton) {
+        DispatchQueue.global().async {
         
-        var character = (sender.currentTitle)!
-        
-        switch character {
+            if self.operationLabel.text == "  0" || self.operationLabel.text == "ERROR" {
+                self.operationLabel.text = "  "
+            }
+            var character = (sender.currentTitle)!
+    
+            switch character {
+                
+            case "(":
+                character = " ( "
+                break
+            case ")":
+                character = " ) "
+                break
+            case "÷":
+                character = " ÷ "
+                break
+            case "×":
+                character = " × "
+                break
+            case "−":
+                character = " − "
+                break
+            case "+":
+                character = " + "
+                break
+            default:
+                break
+            }
             
-        case "(":
-            character = " ( "
-            
-        case ")":
-            character = " ) "
-            
-        case "÷":
-            character = " ÷ "
-            
-        case "×":
-            character = " × "
-            
-        case "−":
-            character = " − "
-            
-        case "+":
-            character = " + "
-            
-        default:
-            character = (sender.currentTitle)!
-            operationLabel.textColor = UIColor.black()
-        }
-        
-        if character != "C" && character != "=" {
-            let labelText = operationLabel.text! + character
-            operationLabel.text = labelText
+            if character != "C" && character != "＝" {
+                DispatchQueue.main.async {
+                    self.operationLabel.text! += character
+                }
+            }
         }
     }
     
     var operandStack = [String]()
-    
-//    var displayValue: Double {
-//        
-//        get {
-//            return (NumberFormatter().number(from: operationLabel.text!)?.doubleValue)!
-//            
-//        } set {
-//            operationLabel.text = "\(newValue)"
-//        }
-//        
-//    }
-    
+    var previousOp = String()
     
     @IBAction func solveButton(_ sender: UIButton) {
-        if operationLabel.text != "" {
-            
-//            operandStack.append(displayValue)
         
-            if operandStack.count >= 2 {
-                operandStack.removeFirst()
-            } else {
-                var operands = operationLabel.text!
-                
-                if operands.contains(" ÷ ") {
-                    operands = removeCharactersInString(string: operands, Characters: " ÷ ", replacementString: " ")
-                } else if operands.contains(" × ") {
-                    operands = removeCharactersInString(string: operands, Characters: " × ", replacementString: " ")
-                } else if operands.contains(" − ") {
-                    operands = removeCharactersInString(string: operands, Characters: " − ", replacementString: " ")
-                } else if operands.contains(" + ") {
-                    operands = removeCharactersInString(string: operands, Characters: " + ", replacementString: " ")
+        var opStack = operationLabel.text?.components(separatedBy: " ")
+        
+        for _ in 0...1 {
+            opStack?.remove(at: 0)
+        }
+        
+        let knownOps = ["÷", "×", "−", "+"]
+        var n = 0
+        for i in knownOps {
+            if opStack?[0] == i || opStack?[(opStack?.count)! - 1] == i {
+                opStack?.remove(at: n)
+            }
+            n += 1
+        }
+        
+        if ((previousOp != operationLabel.text) && (opStack?.count)! >= 3){
+            
+            for i in opStack! {
+                operandStack.append(i)
+            }
+            
+            let calculator = Calculator(operandStack: operandStack)
+            let calculationResult = calculator.evaluate()
+            answerLabel.text = String(calculationResult)
+            
+            let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack)
+            operationHistory.append(operation)
+            
+            operationHistoryTableView.reloadData()
+
+            if operationHistory.count > 2 {
+                let indexPath = NSIndexPath(row: operationHistory.count - 1, section: 0)
+                operationHistoryTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
+            }
+
+            operandStack.removeAll()
+            previousOp = operationLabel.text!
+        } else {
+            if previousOp != operationLabel.text {
+                DispatchQueue.main.async {
+                    self.operationLabel.text = "  ERROR"
+                    self.operandStack.removeAll()
+                    
+                    self.delay(3, closure: {
+                        self.operationLabel.text = "  0"
+                    })
                 }
-                
-                operandStack.append(operands)
-                operandStack = operandStack.shiftRight()
-                print("Operand Stack: \(operandStack)")
-                
             }
         }
-    }
-
-    func operatorTapped(sender: UIButton) {
-        operandStack.append(operationLabel.text!)
-        operandStack.append(sender.currentTitle!)
-    }
-    
-    func performOperation(operandStack: [String]) {
         
-    }
-    
-    func removeCharactersInString(string: String, Characters: String, replacementString: String) -> String {
-        return string.replacingOccurrences(of: Characters, with: replacementString)
     }
     
     func clearButtonTap(recognizer: UITapGestureRecognizer) {
-        guard let button = recognizer.view as? UIButton else { return }
-        if operationLabel.text != "" {
-            let string = operationLabel.text
-            let truncatedString = string?.substring(to: (string?.index(before: (string?.characters.endIndex)!))!)
-            
-            operationLabel.text = truncatedString
+        guard (recognizer.view as? UIButton) != nil else { return }
+        if operationLabel.text != "" && operationLabel.text != "  0" {
+            operationLabel.text = operationLabel.text?.substring(to: (operationLabel.text!.index(before: (operationLabel.text!.characters.endIndex))))
+            if operationLabel.text == "" || operationLabel.text == " " || operationLabel.text == "  " {
+                operationLabel.text = "  0"
+            }
         }
     }
     
     func clearButtonLongPress(recognizer: UILongPressGestureRecognizer) {
-        guard let button = recognizer.view as? UIButton else { return }
-        
-        if operationLabel.text != "" {
-            operationLabel.text = ""
-        }
+        guard (recognizer.view as? UIButton) != nil else { return }
+        operationLabel.text = "  0"
+        answerLabel.text = "0"
         operandStack.removeAll()
+        previousOp.removeAll()
     }
-
-
+    
+    func delay(_ delay:Double, closure:@escaping ()->()) {
+        let deadline = DispatchTime.now() + delay
+        DispatchQueue.main.asyncAfter(deadline: deadline, execute: closure)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return operationHistory.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let operation = self.operationHistory[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "OperationCell") as? OperationHistoryCell!
+        
+        cell?.resultLabel.text = String(operation.getResult())
+        
+        var operationStr = ""
+        for s in operation.getOperation() {
+            var character: String!
+            switch s {
+            case "(":
+                character = " ( "
+                break
+            case ")":
+                character = " ) "
+                break
+            case "÷":
+                character = " ÷ "
+                break
+            case "×":
+                character = " × "
+                break
+            case "−":
+                character = " − "
+                break
+            case "+":
+                character = " + "
+                break
+            default:
+                character = s
+                break
+            }
+            operationStr += character
+        }
+        
+        cell?.operationLabel.text = operationStr
+        
+        cell!.selectionStyle = .none
+        
+        return cell!
+    }
+    func scrollToBottom(animated:Bool) {
+        let indexPath = NSIndexPath(row: operationHistory.count - 1, section: 0)
+        operationHistoryTableView.scrollToRow(at: indexPath as IndexPath, at: UITableViewScrollPosition.bottom, animated: animated)
+    }
 }
 

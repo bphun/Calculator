@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11129.15" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11103.10"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,189 +22,164 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Shc-Dx-yQh">
-                                <frame key="frameInset" minY="372" width="94" height="59"/>
+                                <rect key="frame" x="0.0" y="322" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.8784313725490196" green="0.20000000000000001" blue="0.16078431372549018" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.8784313725490196" green="0.28235294117647058" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="19"/>
                                 <state key="normal" title="C">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
-                                <connections>
-                                    <action selector="clearButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QRK-4H-fzq"/>
-                                    <action selector="clearButtonTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ciM-Wx-jCr"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gD-yT-cEJ">
-                                <frame key="frameInset" minX="188" minY="372" width="94" height="59"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.074509803921568626" green="0.082352941176470587" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="30"/>
-                                <state key="normal" title=")">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fYr-Xk-NPa">
-                                <frame key="frameInset" minX="282" minY="372" width="93" height="59"/>
+                                <rect key="frame" x="282" y="322" width="93" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.074509803921568626" green="0.082352941176470587" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.098039215686274508" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="33"/>
                                 <state key="normal" title="÷">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YyY-GS-4DR">
-                                <frame key="frameInset" minY="431" width="94" height="59"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gD-yT-cEJ">
+                                <rect key="frame" x="188" y="322" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.098039215686274508" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="30"/>
+                                <state key="normal" title=")">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YyY-GS-4DR">
+                                <rect key="frame" x="0.0" y="392" width="94" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="7">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPd-3W-chZ">
-                                <frame key="frameInset" minX="94" minY="431" width="94" height="59"/>
+                                <rect key="frame" x="94" y="392" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="8">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9xp-22-OZh">
-                                <frame key="frameInset" minX="188" minY="431" width="94" height="59"/>
+                                <rect key="frame" x="188" y="392" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="9">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1m3-Mn-kcU">
-                                <frame key="frameInset" minX="282" minY="431" width="93" height="59"/>
+                                <rect key="frame" x="282" y="392" width="93" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.074509803921568626" green="0.082352941176470587" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.098039215686274508" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="33"/>
                                 <state key="normal" title="×">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfj-Fk-4vL">
-                                <frame key="frameInset" minY="490" width="94" height="59"/>
+                                <rect key="frame" x="0.0" y="462" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="4">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8J-LG-tAB">
-                                <frame key="frameInset" minX="94" minY="490" width="94" height="59"/>
+                                <rect key="frame" x="94" y="462" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="5">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EDZ-Mj-IIs">
-                                <frame key="frameInset" minX="282" minY="490" width="93" height="59"/>
+                                <rect key="frame" x="282" y="462" width="93" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.074509803921568626" green="0.082352941176470587" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.098039215686274508" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="33"/>
                                 <state key="normal" title="−">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ta6-1u-Sag">
-                                <frame key="frameInset" minY="549" width="94" height="59"/>
+                                <rect key="frame" x="0.0" y="532" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="1">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TdM-Nz-2m3">
-                                <frame key="frameInset" minX="94" minY="549" width="94" height="59"/>
+                                <rect key="frame" x="94" y="532" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="2">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xKz-Fc-XjF">
-                                <frame key="frameInset" minX="188" minY="549" width="94" height="59"/>
+                                <rect key="frame" x="188" y="532" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="3">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L8A-vc-Y3s">
-                                <frame key="frameInset" minX="282" minY="549" width="94" height="59"/>
+                                <rect key="frame" x="282" y="532" width="93" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.074509803921568626" green="0.082352941176470587" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.098039215686274508" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="33"/>
                                 <state key="normal" title="+">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JVW-8m-43h">
-                                <frame key="frameInset" minX="94" minY="608" width="94" height="59"/>
+                                <rect key="frame" x="94" y="602" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="30"/>
                                 <state key="normal" title=".">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSx-T3-vwe">
-                                <frame key="frameInset" minX="94" minY="372" width="94" height="59"/>
+                                <rect key="frame" x="94" y="322" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.074509803921568626" green="0.082352941176470587" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.098039215686274508" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="30"/>
                                 <state key="normal" title="(">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lrd-tq-prS">
-                                <frame key="frameInset" minY="608" width="94" height="59"/>
+                                <rect key="frame" x="0.0" y="602" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="0">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iEz-6r-x7f">
-                                <frame key="frameInset" minX="16" minY="311" width="343" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Answer: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzK-wR-CwE">
-                                <frame key="frameInset" minX="154" minY="144" width="66" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8TR-Wp-Wgg">
-                                <frame key="frameInset" minX="16" minY="173" width="343" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pth-gK-LHG">
-                                <frame key="frameInset" minX="188" minY="608" width="187" height="59"/>
+                                <rect key="frame" x="188" y="602" width="187" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.13333333333333333" green="0.78431372549019607" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.13333333333333333" green="0.77647058823529413" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="46"/>
-                                <state key="normal" title="=">
+                                <state key="normal" title="＝">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -208,40 +187,74 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eOW-Jw-TRd">
-                                <frame key="frameInset" minX="188" minY="490" width="94" height="59"/>
+                                <rect key="frame" x="188" y="462" width="94" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.10588235294117647" green="0.10196078431372549" blue="0.15294117647058825" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="6">
                                     <color key="titleColor" red="0.70781249999999996" green="0.70781249999999996" blue="0.70781249999999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="78" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="z7h-ev-NVT">
+                                <rect key="frame" x="0.0" y="20" width="375" height="166"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.074509803921568626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="separatorColor" red="0.047058823530000002" green="0.047058823530000002" blue="0.058823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="OperationCell" rowHeight="78" id="y7z-m7-3UB" customClass="OperationHistoryCell" customModule="Calculator" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="78"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="y7z-m7-3UB" id="rcc-bR-xJn">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="77.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EUd-xw-5AR">
+                                                    <rect key="frame" x="8" y="0.0" width="359" height="34"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
+                                                    <color key="textColor" red="0.33725490196078434" green="0.33725490196078434" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="U2u-8z-GeV">
+                                                    <rect key="frame" x="8" y="34" width="359" height="36"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="30"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.074509803921568626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="operationLabel" destination="EUd-xw-5AR" id="VUB-zn-OwB"/>
+                                            <outlet property="resultLabel" destination="U2u-8z-GeV" id="lmp-JA-sKM"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="28" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8TR-Wp-Wgg">
+                                <rect key="frame" x="0.0" y="186" width="375" height="78"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.050932109355926514" green="0.05052841454744339" blue="0.072554297745227814" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="55"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  0" lineBreakMode="headTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iEz-6r-x7f">
+                                <rect key="frame" x="0.0" y="264" width="375" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.047058823529411764" green="0.047058823529411764" blue="0.058823529411764705" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="30"/>
+                                <color key="textColor" red="0.33725490196078434" green="0.33725490196078434" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.047058823529411764" green="0.047058823529411764" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
-                        <outlet property="addButton" destination="L8A-vc-Y3s" id="gHu-SD-bMN"/>
                         <outlet property="answerLabel" destination="8TR-Wp-Wgg" id="iid-ui-Xpb"/>
-                        <outlet property="clearButton" destination="Shc-Dx-yQh" id="E1C-uF-U3D"/>
-                        <outlet property="closeParenthesesButton" destination="8gD-yT-cEJ" id="oar-uC-4va"/>
-                        <outlet property="decimalButton" destination="JVW-8m-43h" id="Fld-A5-W5t"/>
-                        <outlet property="divideButton" destination="fYr-Xk-NPa" id="3Jv-vx-AQY"/>
-                        <outlet property="eightButton" destination="GPd-3W-chZ" id="HtH-KK-FEk"/>
-                        <outlet property="fiveButton" destination="R8J-LG-tAB" id="Qll-lR-cdl"/>
-                        <outlet property="fourButton" destination="Hfj-Fk-4vL" id="KhP-PI-fBr"/>
-                        <outlet property="multiplyButton" destination="1m3-Mn-kcU" id="pbs-Zv-ANu"/>
-                        <outlet property="nineButton" destination="9xp-22-OZh" id="xYq-Kd-MEZ"/>
-                        <outlet property="oneButton" destination="Ta6-1u-Sag" id="Xx7-CB-WMr"/>
-                        <outlet property="openParenthesesButton" destination="aSx-T3-vwe" id="8Ua-PM-PNe"/>
+                        <outlet property="operationHistoryTableView" destination="z7h-ev-NVT" id="gat-v6-Cr5"/>
                         <outlet property="operationLabel" destination="iEz-6r-x7f" id="sbL-3a-Yv4"/>
-                        <outlet property="sevenButton" destination="YyY-GS-4DR" id="lcC-c0-dd0"/>
-                        <outlet property="sixButton" destination="eOW-Jw-TRd" id="XiJ-Ye-yfS"/>
-                        <outlet property="solveButton" destination="Pth-gK-LHG" id="QOg-ED-i3a"/>
-                        <outlet property="subtractButton" destination="EDZ-Mj-IIs" id="Ke5-bh-PuZ"/>
-                        <outlet property="threeButton" destination="xKz-Fc-XjF" id="8Vc-4Z-vin"/>
-                        <outlet property="twoButton" destination="TdM-Nz-2m3" id="EHO-65-aNn"/>
-                        <outlet property="zeroButton" destination="lrd-tq-prS" id="nGE-4N-R9G"/>
-                        <outletCollection property="buttonCollection" destination="Shc-Dx-yQh" collectionClass="NSMutableArray" id="K7c-XQ-HOy"/>
                         <outletCollection property="buttonCollection" destination="aSx-T3-vwe" collectionClass="NSMutableArray" id="Ylk-A5-KBv"/>
                         <outletCollection property="buttonCollection" destination="8gD-yT-cEJ" collectionClass="NSMutableArray" id="CuJ-3c-9Cv"/>
                         <outletCollection property="buttonCollection" destination="fYr-Xk-NPa" collectionClass="NSMutableArray" id="fpG-Yt-GGC"/>
@@ -259,12 +272,12 @@
                         <outletCollection property="buttonCollection" destination="L8A-vc-Y3s" collectionClass="NSMutableArray" id="OmW-xd-oR7"/>
                         <outletCollection property="buttonCollection" destination="lrd-tq-prS" collectionClass="NSMutableArray" id="yGD-c1-rCh"/>
                         <outletCollection property="buttonCollection" destination="JVW-8m-43h" collectionClass="NSMutableArray" id="RC1-ax-QqM"/>
-                        <outletCollection property="buttonCollection" destination="Pth-gK-LHG" collectionClass="NSMutableArray" id="eXx-96-wfW"/>
+                        <outletCollection property="buttonCollection" destination="Shc-Dx-yQh" collectionClass="NSMutableArray" id="SZd-F6-5Yn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="67" y="81"/>
+            <point key="canvasLocation" x="66.400000000000006" y="80.50974512743629"/>
         </scene>
     </scenes>
 </document>

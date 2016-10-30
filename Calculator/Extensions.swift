@@ -7,18 +7,27 @@
 //
 
 import Foundation
+import UIKit
 
 extension Array {
-    func shiftRight( amount: Int = 1) -> [Element] {
-        var amount = amount
-        assert(-count...count ~= amount, "Shift amount out of bounds")
-        if amount < 0 { amount += count }  // this needs to be >= 0
-        return Array(self[amount ..< count] + self[0 ..< amount])
+    func shiftedLeft(by rawOffset: Int = 1) -> Array {
+        let clampedAmount = rawOffset % count
+        let offset = clampedAmount < 0 ? count + clampedAmount : clampedAmount
+        return Array(self[offset ..< count] + self[0 ..< offset])
     }
     
-    mutating func shiftRightInPlace(amount: Int = 1) {
-        self = shiftRight(amount: amount)
+    func shiftedRight(by rawOffset: Int = 1) -> Array {
+        return self.shiftedLeft(by: -rawOffset)
     }
+    
+    mutating func shiftLeft(by rawOffset: Int = 1) {
+        self = self.shiftedLeft(by: rawOffset)
+    }
+    
+    mutating func shiftRight(by rawOffset: Int = 1) {
+        self = self.shiftedRight(by: rawOffset)
+    }
+
 }
 
 extension String {
@@ -27,4 +36,10 @@ extension String {
         return string.replacingOccurrences(of: Characters, with: "")
     }
     
+    func indexOf(string: String) -> String.Index? {
+        return range(of: string, options: .literal, range: nil, locale: nil)?.lowerBound
+    }
 }
+
+
+
