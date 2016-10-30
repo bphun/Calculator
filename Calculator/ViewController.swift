@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -22,6 +23,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
         DispatchQueue.main.async {
+            if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+                self.operationHistoryTableView.backgroundColor = UIColor.clear
+                let blurEffect = UIBlurEffect(style: .dark)
+                let blurEffectView = UIVisualEffectView(effect: blurEffect)
+                self.operationHistoryTableView.backgroundView = blurEffectView
+                
+                //if you want translucent vibrant table view separator lines
+                self.operationHistoryTableView.separatorEffect = UIVibrancyEffect(blurEffect: blurEffect)
+            }
+            
+        }
+        
+        DispatchQueue.global().async {
             var finishedCreatingClearButton = false
             
             self.operationHistoryTableView.delegate = self
@@ -55,7 +69,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func appendCharacter(sender: UIButton) {
         DispatchQueue.global().async {
         
-            if self.operationLabel.text == "  0" || self.operationLabel.text == "ERROR" {
+            if self.operationLabel.text == "  0" || self.operationLabel.text == "  ERROR" {
                 self.operationLabel.text = "  "
             }
             var character = (sender.currentTitle)!
@@ -156,6 +170,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if operationLabel.text == "" || operationLabel.text == " " || operationLabel.text == "  " {
                 operationLabel.text = "  0"
             }
+        } else if operationLabel.text == "  ERROR" {
+            operationLabel.text = "  0"
+            operandStack.removeAll()
+            previousOp.removeAll()
         }
     }
     
@@ -218,9 +236,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         return cell!
     }
-    func scrollToBottom(animated:Bool) {
-        let indexPath = NSIndexPath(row: operationHistory.count - 1, section: 0)
-        operationHistoryTableView.scrollToRow(at: indexPath as IndexPath, at: UITableViewScrollPosition.bottom, animated: animated)
-    }
+    
+
+    
 }
 
