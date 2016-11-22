@@ -27,7 +27,6 @@ extension Array {
     mutating func shiftRight(by rawOffset: Int = 1) {
         self = self.shiftedRight(by: rawOffset)
     }
-
 }
 
 extension String {
@@ -40,6 +39,13 @@ extension String {
         return range(of: string, options: .literal, range: nil, locale: nil)?.lowerBound
     }
 }
+
+//extension Float80 {
+//    var cleanValue: String {
+//        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self as! CVarArg) : String(self)
+//    }
+//
+//}
 
 
 

@@ -7,23 +7,48 @@
 //
 
 import Foundation
+import CoreData
+
+//@objc class MathematicalOperation: NSManagedObject {
+//
+//    @NSManaged var result: Double
+//    @NSManaged var operation: [String]?
+//
+//    convenience public init(result: Double, operation: [String], context: NSManagedObjectContext) {
+//        let entity = NSEntityDescription.entity(forEntityName: "OperationHistory", in: context)!
+//        self.init(entity: entity, insertInto: context)
+//
+//        self.result = result
+//        self.operation = operation
+//    }
+//
+//    public func getResult() -> Double {
+//        return result
+//    }
+//
+//    public func getOperation() -> [String] {
+//        return operation!
+//    }
+//
+//
+//}
 
 class MathematicalOperation {
     
-    private var result: Double
-    private var operandStack: [String]!
-
-    public init(result: Double, operandStack: [String]) {
+    var result: Float32
+    var operation: [String]?
+    
+    public init(result: Float32, operation: [String]) {
         self.result = result
-        self.operandStack = operandStack
+        self.operation = operation
     }
     
-    public func getResult() -> Double {
+    public func getResult() -> Float32 {
         return result
     }
     
     public func getOperation() -> [String] {
-        return operandStack
+        return operation!
     }
     
     

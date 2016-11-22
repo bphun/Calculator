@@ -32,12 +32,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 //if you want translucent vibrant table view separator lines
                 self.operationHistoryTableView.separatorEffect = UIVibrancyEffect(blurEffect: blurEffect)
             }
-            
+            let clearHistoryControl = UIRefreshControl()
+            clearHistoryControl.addTarget(self, action: #selector(ViewController.clearHistory(refreshControl:)), for: .valueChanged)
+            self.operationHistoryTableView.addSubview(clearHistoryControl)
+            self.operationHistoryTableView.allowsSelection = true
         }
         
         DispatchQueue.global().async {
-            var finishedCreatingClearButton = false
-            
             self.operationHistoryTableView.delegate = self
             self.operationHistoryTableView.dataSource = self
             
@@ -46,34 +47,59 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                     UIApplication.shared.statusBarStyle = .lightContent
                     button.layer.borderWidth = 0.28
                     button.layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
-                    button.addTarget(self, action: #selector(ViewController.appendCharacter(sender:)), for: .touchUpInside)
-                    
-                    if (!finishedCreatingClearButton) {
-                        if button.currentTitle == "C" {
-                            let clearButtonLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.clearButtonLongPress(recognizer:)))
-                            clearButtonLongPressGestureRecognizer.minimumPressDuration = 0.25
-                            
-                            let clearButtonTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.clearButtonTap(recognizer:)))
-                            
-                            button.addGestureRecognizer(clearButtonLongPressGestureRecognizer)
-                            button.addGestureRecognizer(clearButtonTapGestureRecognizer)
-                            finishedCreatingClearButton = true
-                        }
-                    }
+                    button.addTarget(self, action: #selector(ViewController.buttontapped(sender:)), for: .touchDown)
+                    button.addTarget(self, action: #selector(ViewController.buttontapped(sender:)), for: .touchDragInside)
+                    button.addTarget(self, action: #selector(ViewController.buttonAction(sender:)), for: .touchDown)
+                    button.addTarget(self, action: #selector(ViewController.buttonReleased(sender:)), for: .touchUpInside)
+                    button.addTarget(self, action: #selector(ViewController.buttonReleased(sender:)), for: .touchDragExit)
                 }
             }
             self.buttonCollection.removeAll()
+            
         }
     }
     
-    func appendCharacter(sender: UIButton) {
+    func buttontapped(sender: UIButton) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.09, delay: 0, options: .curveLinear, animations: {
+                sender.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            })
+            if sender.currentTitle == "C" {
+                self.clearTextField()
+            }
+        }
+    }
+    
+    func buttonReleased(sender: UIButton) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.09, delay: 0, options: .curveLinear, animations: {
+                sender.transform = CGAffineTransform(scaleX: 1, y: 1)
+            })
+        }
+    }
+    
+    func buttonAction(sender: UIButton) {
         DispatchQueue.global().async {
-        
-            if self.operationLabel.text == "  0" || self.operationLabel.text == "  ERROR" {
+            
+            var character = (sender.currentTitle)!
+
+            if character == "C" { return }
+            
+            let numbers = ["1", "2","3","4","5","6","7","8","9","0"]
+            
+            if self.operationLabel.text == "  0" && (character == "(" || character == ")" || character == "÷" || character == "×" || character == "−" || character == "+") {
+                return
+            }
+            
+            var mustBeNumber = false
+            if self.operationLabel.text?[(self.operationLabel.text?.index(before: (self.operationLabel.text?.endIndex)!))!] == " " || self.operationLabel.text?[(self.operationLabel.text?.index(before: (self.operationLabel.text?.endIndex)!))!] == "."  {
+                mustBeNumber = true
+            }
+
+            if self.operationLabel.text == "  0" {
                 self.operationLabel.text = "  "
             }
-            var character = (sender.currentTitle)!
-    
+            
             switch character {
                 
             case "(":
@@ -97,10 +123,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             default:
                 break
             }
-            
+                    
             if character != "C" && character != "＝" {
                 DispatchQueue.main.async {
-                    self.operationLabel.text! += character
+                    if (mustBeNumber) {
+                        if (!numbers.contains(character)) {
+                            return
+                        } else {
+                            self.operationLabel.text! += character
+                        }
+                    } else {
+                        self.operationLabel.text! += character
+                    }
                 }
             }
         }
@@ -117,14 +151,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             opStack?.remove(at: 0)
         }
         
-        let knownOps = ["÷", "×", "−", "+"]
-        var n = 0
-        for i in knownOps {
-            if opStack?[0] == i || opStack?[(opStack?.count)! - 1] == i {
-                opStack?.remove(at: n)
-            }
-            n += 1
-        }
+        //        let knownOps = ["÷", "×", "−", "+"]
+        //        var n = 0
+        //        for i in knownOps {
+        //            if opStack?[0] == i || opStack?[(opStack?.count)! - 1] == i {
+        //                opStack?.remove(at: n)
+        //            }
+        //            n += 1
+        //        }
         
         if ((previousOp != operationLabel.text) && (opStack?.count)! >= 3){
             
@@ -133,21 +167,34 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
             
             let calculator = Calculator(operandStack: operandStack)
-            let calculationResult = calculator.evaluate()
+            let (calculationResult, calcError) = calculator.evaluate()
+            if (calcError != "") {
+                operationLabel.text! = calcError
+                return
+            }
+            
             answerLabel.text = String(calculationResult)
             
-            let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack)
+            //            let managedContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+            //            let operation = MathematicalOperation(result: calculationResult, operation: operandStack, context: managedContext)
+            let operation = MathematicalOperation(result: calculationResult, operation: operandStack)
+            
+            
             operationHistory.append(operation)
             
+            //            saveEntity(key: "result", value: calculationResult)
+            //            saveEntity(key: "operation", value: operandStack)
+            
             operationHistoryTableView.reloadData()
-
-            if operationHistory.count > 2 {
+            
+            if operationHistory.count > 3 {
                 let indexPath = NSIndexPath(row: operationHistory.count - 1, section: 0)
                 operationHistoryTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
             }
-
+            
             operandStack.removeAll()
             previousOp = operationLabel.text!
+            
         } else {
             if previousOp != operationLabel.text {
                 DispatchQueue.main.async {
@@ -163,29 +210,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
-    func clearButtonTap(recognizer: UITapGestureRecognizer) {
-        guard (recognizer.view as? UIButton) != nil else { return }
-        if operationLabel.text != "" && operationLabel.text != "  0" {
-            operationLabel.text = operationLabel.text?.substring(to: (operationLabel.text!.index(before: (operationLabel.text!.characters.endIndex))))
-            if operationLabel.text == "" || operationLabel.text == " " || operationLabel.text == "  " {
-                operationLabel.text = "  0"
-            }
-        } else if operationLabel.text == "  ERROR" {
-            operationLabel.text = "  0"
-            operandStack.removeAll()
-            previousOp.removeAll()
-        }
-    }
-    
-    func clearButtonLongPress(recognizer: UILongPressGestureRecognizer) {
-        guard (recognizer.view as? UIButton) != nil else { return }
-        operationLabel.text = "  0"
-        answerLabel.text = "0"
-        operandStack.removeAll()
-        previousOp.removeAll()
-    }
-    
-    func delay(_ delay:Double, closure:@escaping ()->()) {
+    private func delay(_ delay:Double, closure:@escaping ()->()) {
         let deadline = DispatchTime.now() + delay
         DispatchQueue.main.asyncAfter(deadline: deadline, execute: closure)
     }
@@ -194,14 +219,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return operationHistory.count
     }
     
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let operation = self.operationHistory[indexPath.row]
+        operationLabel.text = "  " + String(operation.getResult())
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let operation = self.operationHistory[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "OperationCell") as? OperationHistoryCell!
         
         cell?.resultLabel.text = String(operation.getResult())
         
         var operationStr = ""
+        
         for s in operation.getOperation() {
             var character: String!
             switch s {
@@ -237,7 +268,40 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return cell!
     }
     
-
+    func clearTextField() {
+        if operationLabel.text != "  0" || operationLabel.text == "  ERROR" {
+            operationLabel.text = "  0"
+            answerLabel.text = "0"
+            operandStack.removeAll()
+            previousOp = ""
+        }
+    }
+    
+    func clearHistory(refreshControl: UIRefreshControl) {
+        DispatchQueue.main.async {
+            self.operationHistory.removeAll()
+            self.operationHistoryTableView.reloadData()
+            refreshControl.endRefreshing()
+        }
+    }
+    
+    func saveAttribute(attribute: String, key: String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext
+        
+        let entity =  NSEntityDescription.entity(forEntityName: "OperationHistory", in: managedContext)
+        
+        let object = NSManagedObject(entity: entity!, insertInto: managedContext)
+        
+        object.setValue(attribute, forKey: key)
+        
+        do {
+            try managedContext.save()
+        } catch let error as NSError  {
+            print("Could not save \(error), \(error.userInfo)")
+        }
+    }
     
 }
 
