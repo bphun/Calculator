@@ -87,6 +87,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		813F49D21DC6C5C1004B894B /* Calculator */ = {
+			isa = PBXGroup;
+			children = (
+				8194BF141D45835B0081E4C3 /* Calculator.swift */,
+				818CFB891DC59E66006511A9 /* MathematicalOperation.swift */,
+				813F49D41DC6C5E0004B894B /* CoreData */,
+			);
+			name = Calculator;
+			sourceTree = "<group>";
+		};
+		813F49D31DC6C5CE004B894B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				81656B3E1D44463400B58D0B /* ViewController.swift */,
+				818CFB871DC59BCE006511A9 /* OperationHistoryCell.swift */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		813F49D41DC6C5E0004B894B /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				813F49CD1DC6988A004B894B /* OperationHistoryModel.xcdatamodeld */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
+		813F49D51DC6C5F0004B894B /* StoryBoards */ = {
+			isa = PBXGroup;
+			children = (
+				81656B401D44463400B58D0B /* Main.storyboard */,
+				81656B481D44463500B58D0B /* LaunchScreen.storyboard */,
+			);
+			name = StoryBoards;
+			sourceTree = "<group>";
+		};
 		81656B301D44463400B58D0B = {
 			isa = PBXGroup;
 			children = (
@@ -112,15 +148,11 @@
 			isa = PBXGroup;
 			children = (
 				81656B3C1D44463400B58D0B /* AppDelegate.swift */,
-				81656B3E1D44463400B58D0B /* ViewController.swift */,
-				8194BF141D45835B0081E4C3 /* Calculator.swift */,
-				818CFB891DC59E66006511A9 /* MathematicalOperation.swift */,
-				818CFB871DC59BCE006511A9 /* OperationHistoryCell.swift */,
+				813F49D31DC6C5CE004B894B /* UI */,
+				813F49D21DC6C5C1004B894B /* Calculator */,
 				8194BF161D46C6F10081E4C3 /* Extensions.swift */,
 				81656B461D44463500B58D0B /* Assets.xcassets */,
-				81656B401D44463400B58D0B /* Main.storyboard */,
-				813F49CD1DC6988A004B894B /* OperationHistoryModel.xcdatamodeld */,
-				81656B481D44463500B58D0B /* LaunchScreen.storyboard */,
+				813F49D51DC6C5F0004B894B /* StoryBoards */,
 				81656B4B1D44463500B58D0B /* Info.plist */,
 			);
 			path = Calculator;
@@ -451,7 +483,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Calculator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Brandon.Phan.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -464,6 +498,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Calculator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Brandon.Phan.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -1,3 +1,5 @@
+
+
 //
 //  CalculatorUITests.swift
 //  CalculatorUITests
@@ -31,6 +33,75 @@ class CalculatorUITests: XCTestCase {
     func testExample() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let app = XCUIApplication()
+        let button = app.buttons["3"]
+        button.tap()
+        
+        let button2 = app.buttons["+"]
+        button2.tap()
+        
+        let button3 = app.buttons["5"]
+        button3.tap()
+        
+        let button4 = app.buttons["＝"]
+        button4.tap()
+        
+        let cButton = app.buttons["C"]
+        cButton.press(forDuration: 1.0);
+        
+        let button5 = app.buttons["6"]
+        button5.tap()
+        
+        let button6 = app.buttons["−"]
+        button6.tap()
+        
+        let button7 = app.buttons["9"]
+        button7.tap()
+        button4.tap()
+        
+        let button8 = app.buttons["÷"]
+        button8.tap()
+        button7.tap()
+        button3.tap()
+        button4.tap()
+        cButton.press(forDuration: 0.8);
+        button7.tap()
+        button3.tap()
+        
+        let button9 = app.buttons["2"]
+        button9.tap()
+        app.buttons["4"].tap()
+        button3.tap()
+        button.tap()
+        button3.tap()
+        app.buttons["8"].tap()
+        button8.tap()
+        button3.tap()
+        button5.tap()
+        button4.tap()
+        cButton.press(forDuration: 0.9);
+        button3.tap()
+        button.tap()
+        button6.tap()
+        button9.tap()
+        button4.tap()
+        cButton.press(forDuration: 1.1);
+        button9.tap()
+        button.tap()
+        button2.tap()
+        button5.tap()
+        button3.tap()
+        button4.tap()
+        cButton.press(forDuration: 0.8);
+        cButton.press(forDuration: 1.0);
+        button3.tap()
+        button7.tap()
+        app.buttons["×"].tap()
+        button9.tap()
+        app.buttons["7"].tap()
+        button5.tap()
+        button4.tap()
+        cButton.press(forDuration: 0.9);
     }
     
 }

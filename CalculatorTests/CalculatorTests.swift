@@ -30,6 +30,12 @@ class CalculatorTests: XCTestCase {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
+            
+            let operandStack = ["10", "+", "63.2"]
+            let calculator = Calculator(operandStack: operandStack)
+            let calculationResult = calculator.evaluate()
+            print("Result: \(calculationResult)")
+            
         }
     }
     

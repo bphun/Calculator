@@ -11,10 +11,10 @@ import CoreData
 
 //@objc class MathematicalOperation: NSManagedObject {
 //
-//    @NSManaged var result: Double
+//    @NSManaged var result: Float64
 //    @NSManaged var operation: [String]?
 //
-//    convenience public init(result: Double, operation: [String], context: NSManagedObjectContext) {
+//    convenience public init(result: Float64, operation: [String], context: NSManagedObjectContext) {
 //        let entity = NSEntityDescription.entity(forEntityName: "OperationHistory", in: context)!
 //        self.init(entity: entity, insertInto: context)
 //
@@ -22,7 +22,7 @@ import CoreData
 //        self.operation = operation
 //    }
 //
-//    public func getResult() -> Double {
+//    public func getResult() -> Float64 {
 //        return result
 //    }
 //
@@ -35,15 +35,15 @@ import CoreData
 
 class MathematicalOperation {
     
-    var result: Float32
+    var result: Float64
     var operation: [String]?
     
-    public init(result: Float32, operation: [String]) {
+    public init(result: Float64, operation: [String]) {
         self.result = result
         self.operation = operation
     }
     
-    public func getResult() -> Float32 {
+    public func getResult() -> Float64 {
         return result
     }
     
