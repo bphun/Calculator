@@ -7,3 +7,12 @@
 //
 
 import Foundation
+import UIKit
+
+class UnitConversionViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+}
