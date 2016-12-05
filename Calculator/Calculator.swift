@@ -8,78 +8,165 @@
 
 import Foundation
 
-protocol CalculatorProtocol {
-    func evaluate() -> (Float64, String)
-    func correctSemantics() -> Bool
-}
+class Calculator {
+    
+    let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 6
+        formatter.notANumberSymbol = "  ERROR"
+        formatter.groupingSeparator = " "
+        formatter.locale = NSLocale.current
+        return formatter
+        
+    }()
+    
+    private var internalProgram = [AnyObject]()
+    private var accumulator = 0.0
 
-class Calculator: CalculatorProtocol {
-    
-    private var operandStack = [String]()
-    
-    public init(operandStack: [String]) {
-        self.operandStack = operandStack
+    var result: Double {
+        get {
+            return accumulator
+        }
+    }
+
+    private var currentPrecedence = Int.max
+    private var descriptionAccumulator = "0" {
+        didSet {
+            if pending == nil {
+                currentPrecedence = Int.max
+            }
+        }
     }
     
-    public func evaluate() -> (Float64, String) {
-        print("OperandStack: \(operandStack)")
-//        var (result, error) = (Float64(), String())
-        
-        var result: Float64 = 0.0
-        let error = ""
-        if (!correctSemantics()) {
-            return (0, "  ERROR")
+    var description: String {
+        get {
+            if pending == nil {
+                return descriptionAccumulator
+            } else {
+                return pending!.descriptionFunction(pending!.descriptionOperand, pending!.descriptionOperand != descriptionAccumulator ? descriptionAccumulator : "")
+            }
         }
-        
-        let op1 = Float64(self.operandStack[0])!
-        let op2 = Float64(self.operandStack[2])!
-        let operand = self.operandStack[1]
-
-        switch operand {
-        case "×":
-            result = op1 * op2
-            break
-        case "÷":
-            result = op1 / op2
-            break
-        case "+":
-            result = op1 + op2
-            break;
-        case "-":
-            result = op1 - op2
-            break
-        default:
-            break
+    }
+    
+    var isPartialResult: Bool {
+        get {
+            return pending != nil
         }
-        print(op1 - op2)
-        
-        for _ in 0..<3 {
-            self.operandStack.remove(at: 0)
-        }
-        
-        if self.operandStack.count > 0 && self.operandStack.count % 2 == 0 {
-            self.operandStack.append(String(format: "%.1f", result))
-            self.operandStack = self.operandStack.shiftedRight()
+    }
+    
+    
+    func setOperand(operand: Double) {
+        accumulator = operand
+        descriptionAccumulator = formatter.string(from: NSNumber(value: accumulator)) ?? ""
+        internalProgram.append(operand as AnyObject)
+    }
+    
+    private enum Operation {
+        case NullaryOperation(() -> Double,String)
+        case Constant(Double)
+        case UnaryOperation((Double) -> Double,(String) -> String)
+        case BinaryOperation((Double, Double) -> Double, (String, String) -> String, Int)
+        case Equals
+    }
+    
+    private var operations: [String: Operation] = [
+        "rand": Operation.NullaryOperation(drand48, "rand()"),
+        "π": Operation.Constant(M_PI),
+        "e": Operation.Constant(M_E),
+        "±": Operation.UnaryOperation({ -$0 }, { "±(" + $0 + ")"}),
+        "√": Operation.UnaryOperation(sqrt, { "√(" + $0 + ")"}),
+        "cos": Operation.UnaryOperation(cos,{ "cos(" + $0 + ")"}),
+        "sin": Operation.UnaryOperation(sin,{ "sin(" + $0 + ")"}),
+        "tan": Operation.UnaryOperation(tan,{ "tan(" + $0 + ")"}),
+        "sin⁻¹": Operation.UnaryOperation(asin, { "sin⁻¹(" + $0 + ")"}),
+        "cos⁻¹": Operation.UnaryOperation(acos, { "cos⁻¹(" + $0 + ")"}),
+        "tan⁻¹": Operation.UnaryOperation(atan, { "tan⁻¹(" + $0 + ")"}),
+        "ln": Operation.UnaryOperation(log, { "ln(" + $0 + ")"}),
+        "x⁻¹": Operation.UnaryOperation({ 1.0 / $0}, {"(" + $0 + ")⁻¹"}),
+        "х²": Operation.UnaryOperation({$0 * $0}, { "(" + $0 + ")²"}),
+        "×": Operation.BinaryOperation(*, { $0 + " × " + $1 }, 1),
+        "÷": Operation.BinaryOperation(/, { $0 + " ÷ " + $1 }, 1),
+        "+": Operation.BinaryOperation(+, { $0 + " + " + $1 }, 0),
+        "−": Operation.BinaryOperation(-, { $0 + "-" + $1 }, 0),
+        "xʸ" : Operation.BinaryOperation(pow, { $0 + " ^ " + $1 }, 2),
+        "=": Operation.Equals
+    ]
+    
+    func performOperation(symbol: String) {
+        internalProgram.append(symbol as AnyObject)
+        if let operation = operations[symbol] {
+            switch operation {
+            case .NullaryOperation(let function, let descriptionValue):
+                accumulator = function()
+                descriptionAccumulator = descriptionValue
+                
+            case .Constant(let value):
+                accumulator = value
+                descriptionAccumulator = symbol
+                
+            case .UnaryOperation(let function, let descriptionFunction):
+                accumulator = function(accumulator)
+                descriptionAccumulator = descriptionFunction(descriptionAccumulator)
+                
+            case .BinaryOperation(let function, let descriptionFunction, let precedence):
+                executeBinaryOperation()
+                if currentPrecedence < precedence {
+                    descriptionAccumulator = "(" + descriptionAccumulator + ")"
+                }
+                currentPrecedence = precedence
+                pending = PendingBinaryOperationInfo(binaryOperation: function, firstOperand: accumulator, descriptionFunction: descriptionFunction, descriptionOperand: descriptionAccumulator)
             
-            (result,_) = self.evaluate()
+            case .Equals:
+                executeBinaryOperation()
+                
+            }
         }
-
-        self.operandStack.removeAll()
-        print("Result: \(result) \n")
-        return (result, error)
     }
     
-    internal func correctSemantics() -> Bool {
-        let numbers: [Character] = ["1", "2","3","4","5","6","7","8","9","0"]
-        let ops = ["(",")","÷","×","−","+"]
-        if operandStack[0] != "" && numbers.contains(operandStack[0].characters.first!) {
-            if operandStack[1] != "" && ops.contains(operandStack[1]) {
-                if operandStack[2] != "" && numbers.contains(operandStack[2].characters.first!) {
-                    return true
+    private func executeBinaryOperation() {
+        
+        if pending != nil{
+            accumulator = pending!.binaryOperation(pending!.firstOperand, accumulator)
+            descriptionAccumulator = pending!.descriptionFunction(pending!.descriptionOperand, descriptionAccumulator)
+            pending = nil
+        }
+    }
+    
+    typealias PropertyList = AnyObject
+    
+    var program: PropertyList {
+        get {
+            return internalProgram as Calculator.PropertyList
+        } set {
+            clear()
+            if let arrayOfOps = newValue as? [AnyObject] {
+                for op in arrayOfOps {
+                    if let operand = op as? Double {
+                        setOperand(operand: operand)
+                    } else if let operation = op as? String {
+                        performOperation(symbol: operation)
+                    }
                 }
             }
         }
-        return false
     }
     
+    func clear() {
+        accumulator = 0.0
+        pending = nil
+        descriptionAccumulator = " "
+        currentPrecedence = Int.max
+    }
+    
+    private var pending: PendingBinaryOperationInfo?
+
+    private struct PendingBinaryOperationInfo {
+        var binaryOperation: (Double, Double) ->Double
+        var firstOperand: Double
+        var descriptionFunction: (String, String) -> String
+        var descriptionOperand: String
+    }
+
 }
+

@@ -35,20 +35,20 @@ import CoreData
 
 class MathematicalOperation {
     
-    var result: Float64
-    var operation: [String]?
+    private var result: Float64
+    private var operandStack: [String]?
     
-    public init(result: Float64, operation: [String]) {
+    public init(result: Float64, operandStack: [String]) {
         self.result = result
-        self.operation = operation
+        self.operandStack = operandStack
     }
     
     public func getResult() -> Float64 {
         return result
     }
     
-    public func getOperation() -> [String] {
-        return operation!
+    public func getOperandStack() -> [String] {
+        return operandStack!
     }
     
     
