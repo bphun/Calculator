@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		813F49CF1DC6988A004B894B /* OperationHistoryModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 813F49CD1DC6988A004B894B /* OperationHistoryModel.xcdatamodeld */; };
 		81656B3D1D44463400B58D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81656B3C1D44463400B58D0B /* AppDelegate.swift */; };
-		81656B3F1D44463400B58D0B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81656B3E1D44463400B58D0B /* ViewController.swift */; };
+		81656B3F1D44463400B58D0B /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81656B3E1D44463400B58D0B /* CalculatorViewController.swift */; };
 		81656B421D44463400B58D0B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81656B401D44463400B58D0B /* Main.storyboard */; };
 		81656B471D44463500B58D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81656B461D44463500B58D0B /* Assets.xcassets */; };
 		81656B4A1D44463500B58D0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81656B481D44463500B58D0B /* LaunchScreen.storyboard */; };
@@ -19,6 +19,7 @@
 		818CFB8A1DC59E66006511A9 /* MathematicalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818CFB891DC59E66006511A9 /* MathematicalOperation.swift */; };
 		8194BF151D45835B0081E4C3 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8194BF141D45835B0081E4C3 /* Calculator.swift */; };
 		8194BF171D46C6F10081E4C3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8194BF161D46C6F10081E4C3 /* Extensions.swift */; };
+		81B06A391DF53D9200995F55 /* UnitConversionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B06A381DF53D9200995F55 /* UnitConversionViewController.swift */; };
 		81E34B8B1DC6983B0088F047 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E34B8A1DC6983B0088F047 /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +44,7 @@
 		813F49CE1DC6988A004B894B /* OperationHistoryModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OperationHistoryModel.xcdatamodel; sourceTree = "<group>"; };
 		81656B391D44463400B58D0B /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81656B3C1D44463400B58D0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		81656B3E1D44463400B58D0B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		81656B3E1D44463400B58D0B /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		81656B411D44463400B58D0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		81656B461D44463500B58D0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81656B491D44463500B58D0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -58,6 +59,8 @@
 		818CFB891DC59E66006511A9 /* MathematicalOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathematicalOperation.swift; sourceTree = "<group>"; };
 		8194BF141D45835B0081E4C3 /* Calculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 		8194BF161D46C6F10081E4C3 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		81B06A381DF53D9200995F55 /* UnitConversionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitConversionViewController.swift; sourceTree = "<group>"; };
+		81BF54891DF14A3D00D9D37F /* Tests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Tests.playground; sourceTree = "<group>"; };
 		81E34B8A1DC6983B0088F047 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -100,7 +103,8 @@
 		813F49D31DC6C5CE004B894B /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				81656B3E1D44463400B58D0B /* ViewController.swift */,
+				81656B3E1D44463400B58D0B /* CalculatorViewController.swift */,
+				81B06A381DF53D9200995F55 /* UnitConversionViewController.swift */,
 				818CFB871DC59BCE006511A9 /* OperationHistoryCell.swift */,
 			);
 			name = UI;
@@ -152,6 +156,7 @@
 				813F49D21DC6C5C1004B894B /* Calculator */,
 				8194BF161D46C6F10081E4C3 /* Extensions.swift */,
 				81656B461D44463500B58D0B /* Assets.xcassets */,
+				81BF54891DF14A3D00D9D37F /* Tests.playground */,
 				813F49D51DC6C5F0004B894B /* StoryBoards */,
 				81656B4B1D44463500B58D0B /* Info.plist */,
 			);
@@ -326,9 +331,10 @@
 			files = (
 				818CFB881DC59BCE006511A9 /* OperationHistoryCell.swift in Sources */,
 				818CFB8A1DC59E66006511A9 /* MathematicalOperation.swift in Sources */,
+				81B06A391DF53D9200995F55 /* UnitConversionViewController.swift in Sources */,
 				813F49CF1DC6988A004B894B /* OperationHistoryModel.xcdatamodeld in Sources */,
 				8194BF171D46C6F10081E4C3 /* Extensions.swift in Sources */,
-				81656B3F1D44463400B58D0B /* ViewController.swift in Sources */,
+				81656B3F1D44463400B58D0B /* CalculatorViewController.swift in Sources */,
 				8194BF151D45835B0081E4C3 /* Calculator.swift in Sources */,
 				81656B3D1D44463400B58D0B /* AppDelegate.swift in Sources */,
 			);
@@ -500,6 +506,7 @@
 				INFOPLIST_FILE = Calculator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Brandon.Phan.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
