@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Category.swift
 //  Calculator
 //
 //  Created by Brandon Phan on 12/10/16.

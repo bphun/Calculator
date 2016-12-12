@@ -1,5 +1,5 @@
 //
-//  Unit.swift
+//  Density.swift
 //  Calculator
 //
 //  Created by Brandon Phan on 12/10/16.
@@ -7,13 +7,3 @@
 //
 
 import Foundation
-
-class Unit {
-    
-    init(<#parameters#>) {
-        <#statements#>
-    }
-    
-    
-    
-}
