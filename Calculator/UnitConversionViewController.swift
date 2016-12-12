@@ -7,3 +7,18 @@
 //
 
 import Foundation
+import UIKit
+
+class UnitConversionViewController: UIViewController {
+    
+    private var category: Category!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+ 
+    public func setCategory(category: Category) {
+        self.category = category
+    }
+    
+}

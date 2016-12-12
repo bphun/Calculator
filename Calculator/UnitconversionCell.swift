@@ -6,4 +6,9 @@
 //  Copyright © 2016 Brandon Phan. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class UnitconversionCell: UITableViewCell {
+    
+    @IBOutlet weak var nameLabel: UILabel!
+}

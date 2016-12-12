@@ -7,7 +7,14 @@
 //
 
 import Foundation
+import UIKit
 
-class Acceleration: Unit {
+class Acceleration: Category {
     
+    override init() {
+        super.init()
+        image = UIImage(named: "acceleration")
+        name = "Acceleration"
+    }
+
 }

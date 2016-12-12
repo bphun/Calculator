@@ -7,9 +7,14 @@
 //
 
 import Foundation
+import UIKit
 
 class UnitConverter {
     
-    let categories: Unit = [Acceleration]
+    private let categories = [Acceleration(), Density()]
+    
+    public func getCategories() -> [Category] {
+        return categories
+    }
     
 }

@@ -7,3 +7,18 @@
 //
 
 import Foundation
+import UIKit
+
+public class Category {
+    
+    public var name: String!
+    public var image: UIImage!
+    
+    public func getImage() -> UIImage {
+        return image
+    }
+    
+    public func getName() -> String {
+        return name
+    }
+}

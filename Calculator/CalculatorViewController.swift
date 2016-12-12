@@ -40,24 +40,16 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
             self.dragView.layer.cornerRadius = 2
             self.dragView.alpha = 0.2
         
-//            self.dragView.translatesAutoresizingMaskIntoConstraints = false
+            let swipeGestureRecognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(CalculatorViewController.showUnitConverter))
+            swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.right
+            self.view.addGestureRecognizer(swipeGestureRecognizer)
         }
-        
-//        leftConstraint = NSLayoutConstraint(item: self.dragView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .leftMargin, multiplier: 1, constant: 0)
-//        leftConstraint.isActive = true
-//        self.dragView.addConstraint(leftConstraint)
-
-//        let gravity = UIGravityBehavior()
-//        let dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
-//        gravity.addItem(self.dragView)
-//        gravity.gravityDirection = self.gravityVector
-//        dynamicAnimator.addBehavior(gravity)
         
         DispatchQueue.global().async {
             self.operationHistoryTableView.delegate = self
             self.operationHistoryTableView.dataSource = self
-            let dragViewGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(CalculatorViewController.dragView(recognizer:)))
-            self.dragView.addGestureRecognizer(dragViewGestureRecognizer)
+//            let dragViewGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(CalculatorViewController.dragView(recognizer:)))
+//            self.dragView.addGestureRecognizer(dragViewGestureRecognizer)
             
             //  Initialize all the buttons with the necessary actions when a certian action is executed
             for button in self.buttonCollection {
@@ -82,35 +74,46 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         originalPosition = self.dragView.center
     }
     
-    var prev: CGFloat = 0
-    func dragView(recognizer: UIPanGestureRecognizer) {
-        let point = recognizer.location(in: self.view);
-        self.dragView.center.x = point.x
-        
+    func showUnitConverter() {
+        self.performSegue(withIdentifier: "pickerViewSegue", sender: self)
+    }
+    
+//    var prev: CGFloat = 0
+//    func dragView(recognizer: UIPanGestureRecognizer) {
+//        let point = recognizer.location(in: self.view);
+//        self.dragView.center.x = point.x
+//        
 //        while prev != point.x {
 //            self.dragView.alpha -= 0.007
 //            prev = self.dragView.center.x
+//            if self.dragView.center == self.view.center {
+//                DispatchQueue.main.async {
+//                    self.performSegue(withIdentifier: "pickerViewSegue", sender: self)
+//                }
+//            }
 //        }
 //
-        DispatchQueue.main.async {
-            switch recognizer.state {
-                
-            case .changed:
-//                let center = recognizer.translation(in: self.view)
-                self.dragView.center = CGPoint(x: self.dragView.center.x + self.originalPosition.x, y: self.dragView.center.y)
-                recognizer.setTranslation(CGPoint.zero, in: self.view)
-                
-            case .ended:
-                UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
-                    self.dragView.center = self.originalPosition
-                }, completion: nil)
-                
-                
-            default:
-                break
-            }
-        }
-    }
+//        switch recognizer.state {
+//            
+//        case .changed:
+//            //                let center = recognizer.translation(in: self.view)
+//            //                self.dragView.center = CGPoint(x: self.dragView.center.x + self.originalPosition.x, y: self.dragView.center.y)
+//            recognizer.setTranslation(CGPoint.zero, in: self.view)
+//            
+//        case .ended:
+//            DispatchQueue.main.async {
+//                UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
+//                    self.dragView.center = self.originalPosition
+//                    self.dragView.alpha = 0.2
+//                }, completion: nil)
+//            }
+//            
+//            
+//        default:
+//            break
+//        }
+//        
+//    }
     
     private var operandStack = [String]()
     private var previousOp = String()

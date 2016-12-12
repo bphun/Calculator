@@ -7,3 +7,14 @@
 //
 
 import Foundation
+import UIKit
+
+class Density: Category {
+    
+    override init() {
+        super.init()
+        image = UIImage(named: "acceleration")
+        name = "Density"
+    }
+    
+}
