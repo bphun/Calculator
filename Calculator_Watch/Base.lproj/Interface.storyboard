@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch42" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11508"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller spacing="1" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Calculator_Watch" customModuleProvider="target">
+                    <items>
+                        <label width="156" height="28" alignment="left" textAlignment="right" id="5ZW-4b-sB2">
+                            <fontDescription key="font" type="system" pointSize="23"/>
+                        </label>
+                        <label width="156" height="22" alignment="left" text="  0" textAlignment="left" id="r9j-FA-FhO" userLabel="0">
+                            <fontDescription key="font" type="system" pointSize="18"/>
+                        </label>
+                        <group width="152" height="29" alignment="center" spacing="1" id="4ab-Fk-oHx">
+                            <items>
+                                <button width="50" height="29" alignment="left" title="7" id="5Dc-RA-U1S" userLabel="7">
+                                    <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="sevenButton" destination="AgC-eL-Hgc" id="y51-jL-Lb9"/>
+                                    </connections>
+                                </button>
+                                <button width="50" height="29" alignment="left" title="8" id="lg5-yq-RkT" userLabel="8">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="eightButton" destination="AgC-eL-Hgc" id="Mgd-Qg-7l3"/>
+                                    </connections>
+                                </button>
+                                <button width="50" height="29" alignment="left" title="9" id="v6g-8i-wYS" userLabel="9">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="nineButton" destination="AgC-eL-Hgc" id="AT7-Jp-3BT"/>
+                                    </connections>
+                                </button>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                        </group>
+                        <group alignment="center" spacing="1" id="8RY-ap-rSJ" userLabel="Group_1">
+                            <items>
+                                <button width="50" height="29" alignment="left" title="4" id="Lwu-Gn-0iX" userLabel="4">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="fourButton" destination="AgC-eL-Hgc" id="VcJ-Bg-SfN"/>
+                                    </connections>
+                                </button>
+                                <button width="50" height="29" alignment="left" title="5" id="zir-FM-X6K" userLabel="5">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="fiveButton" destination="AgC-eL-Hgc" id="KP5-ZV-SVv"/>
+                                    </connections>
+                                </button>
+                                <button width="50" height="29" alignment="left" title="6" id="zCj-L9-Nh4" userLabel="6">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="sixButton" destination="AgC-eL-Hgc" id="ALs-L6-yhX"/>
+                                    </connections>
+                                </button>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                        </group>
+                        <group height="29" alignment="center" spacing="1" id="P52-lW-JLC" userLabel="Group_2">
+                            <items>
+                                <button width="50" height="29" alignment="left" title="1" id="H86-k4-oGr" userLabel="1">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="oneButton" destination="AgC-eL-Hgc" id="sbu-jH-02e"/>
+                                    </connections>
+                                </button>
+                                <button width="50" height="28" alignment="left" title="2" id="IgO-2N-vh7" userLabel="2">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="twoButton" destination="AgC-eL-Hgc" id="yO9-bf-1yW"/>
+                                    </connections>
+                                </button>
+                                <button width="50" height="28" alignment="left" title="3" id="03W-1J-ofN" userLabel="3">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="threeButton" destination="AgC-eL-Hgc" id="4wn-MC-RmS"/>
+                                    </connections>
+                                </button>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                        </group>
+                        <group alignment="center" spacing="1" id="vNt-Cn-Kh6" userLabel="Group_3">
+                            <items>
+                                <button width="50" height="29" alignment="left" title="0" id="tJt-kS-SPB" userLabel="0">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="zeroButton" destination="AgC-eL-Hgc" id="Uqh-TO-XmN"/>
+                                    </connections>
+                                </button>
+                                <button width="50" height="29" alignment="left" title="." id="X4L-te-Myk" userLabel=".">
+                                    <color key="backgroundColor" red="0.14117647059999999" green="0.14117647059999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="decimalButton" destination="AgC-eL-Hgc" id="clY-wK-10l"/>
+                                    </connections>
+                                </button>
+                                <button width="50" height="29" alignment="left" title="⌫" id="Hf8-0m-AS9" userLabel="⌫">
+                                    <color key="backgroundColor" red="0.8784313725490196" green="0.28235294117647058" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="font" type="system" pointSize="15"/>
+                                    <connections>
+                                        <action selector="clearButton" destination="AgC-eL-Hgc" id="Kkt-sy-Nah"/>
+                                    </connections>
+                                </button>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                        </group>
+                    </items>
+                    <menu key="menu" id="aQ4-Ka-QKN">
+                        <items>
+                            <menuItem title="Add" image="addition" id="P5i-Sw-BMa" userLabel="addition">
+                                <connections>
+                                    <action selector="addButton" destination="AgC-eL-Hgc" id="ysp-xk-4Kx"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Divide" image="division" id="lzv-Ny-q6v" userLabel="division">
+                                <connections>
+                                    <action selector="divideButton" destination="AgC-eL-Hgc" id="9lZ-E8-pXd"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Multiply" image="multiplication" id="pOA-Lp-A3p" userLabel="multiplication">
+                                <connections>
+                                    <action selector="multiplyButton" destination="AgC-eL-Hgc" id="FuU-ex-mHT"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Subtraction" image="subtraction" id="h7O-Mn-th6" userLabel="subtraction">
+                                <connections>
+                                    <action selector="subtractButton" destination="AgC-eL-Hgc" id="bNY-be-9Tu"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                    <connections>
+                        <outlet property="answerLabel" destination="5ZW-4b-sB2" id="4L2-he-ou5"/>
+                        <outlet property="operationLabel" destination="r9j-FA-FhO" id="vR8-Xp-toT"/>
+                        <outlet property="sevenButton" destination="5Dc-RA-U1S" id="C0F-Zz-SR8"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="50.564102564102569" y="90.230769230769241"/>
+        </scene>
+    </scenes>
+</document>

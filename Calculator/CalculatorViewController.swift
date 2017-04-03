@@ -139,7 +139,6 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBAction func solveButton(_ sender: UIButton) {
         
-        
         /* Populate operandStack by using regular expressions, in this case it is just one empty space
          * example: "3 + 3" -> ["3", "+", "3"]
         */
@@ -174,6 +173,15 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         
         //  Create an operation object, which is used ot store the recently performed operation and the resulting answer to that operation
         let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack)
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        let managedObjectContext = appDelegate.managedObjectContext
+//        let operation_CoreData = NSEntityDescription.insertNewObject(forEntityName: "operation", into: managedObjectContext) as! MathematicalOperation
+//    
+//        do {
+//            try managedObjectContext.save()
+//        } catch NSMangedObjectContext {
+//            <#statements#>
+//        }
         
         //  Add the operation to the history array so that the table view can be updated with accurate data
         operationHistory.append(operation)
@@ -197,7 +205,20 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         var stack = self.operandStack
         var result = 0.0
         
-        guard stack[2] != "" else { return Double(stack[0])! }
+        if (stack.contains("")) {
+            var i = 0
+            for s in stack {
+                if s == "" {
+                    stack.remove(at: i)
+                } else {
+                    i += 1
+                    continue
+                }
+                i += 1
+            }
+        }
+
+        guard stack.count >= 3 else { return Double(stack[0])! }
         
         while stack.count >= 3 {
             
@@ -312,7 +333,6 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
      * the appropriate attribute to it
     */
     func updateOpLabel(text: String) {
-        
         DispatchQueue.global().async {
             var index: String.Index!
             let attributedString = NSMutableAttributedString()
@@ -452,7 +472,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     
     //  Removes the last character from the string when a tap is detected in the clear button and update operationLabel
     @IBAction func clearButtonTap(_ sender: Any) {
-        guard self.operationLabel.text != "  0" else { return }
+        guard self.operationLabel.text != "  0" || self.operationLabel.text != "  ERROR" else { return }
         
         if self.operationLabel.text?.characters.last == " " {
             updateOpLabel(text: String(self.operationLabel.text!.characters.dropLast(2)))

@@ -34,13 +34,7 @@ class UnitConversionPickerViewController: UIViewController, UITableViewDelegate,
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "tableViewSegue", sender: self)
-    }
 
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         category = categories[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversionCell") as? UnitconversionCell!
@@ -48,7 +42,14 @@ class UnitConversionPickerViewController: UIViewController, UITableViewDelegate,
         cell?.nameLabel.text = category.getName()
         cell?.imageView?.image = category.getImage()
         
+        cell?.selectionStyle = .default
+        
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Sdf")
+        self.performSegue(withIdentifier: "tableViewSegue", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -9,8 +9,6 @@
 import UIKit
 
 class OperationHistoryCell: UITableViewCell {
-
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var operationLabel: UILabel!
-
 }

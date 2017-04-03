@@ -9,6 +9,5 @@
 import UIKit
 
 class UnitconversionCell: UITableViewCell {
-    
     @IBOutlet weak var nameLabel: UILabel!
 }

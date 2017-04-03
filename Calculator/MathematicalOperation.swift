@@ -9,28 +9,26 @@
 import Foundation
 import CoreData
 
-//@objc class MathematicalOperation: NSManagedObject {
+//class MathematicalOperation: NSManagedObject {
 //
 //    @NSManaged var result: Float64
-//    @NSManaged var operation: [String]?
+//    @NSManaged var operandStack: [String]?
 //
-//    convenience public init(result: Float64, operation: [String], context: NSManagedObjectContext) {
+//    convenience public init(result: Float64, operandStack: [String], context: NSManagedObjectContext) {
 //        let entity = NSEntityDescription.entity(forEntityName: "OperationHistory", in: context)!
 //        self.init(entity: entity, insertInto: context)
 //
 //        self.result = result
-//        self.operation = operation
+//        self.operandStack = operandStack
 //    }
 //
 //    public func getResult() -> Float64 {
 //        return result
 //    }
 //
-//    public func getOperation() -> [String] {
-//        return operation!
+//    public func getOperandStack() -> [String] {
+//        return operandStack!
 //    }
-//
-//
 //}
 
 class MathematicalOperation {
@@ -50,6 +48,4 @@ class MathematicalOperation {
     public func getOperandStack() -> [String] {
         return operandStack!
     }
-    
-    
 }
