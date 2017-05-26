@@ -17,15 +17,6 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var operationLabel: UILabel!
     @IBOutlet weak var operationHistoryTableView: UITableView!
-    @IBOutlet weak var dragView: UIView!
-    
-    lazy var gravityVector: CGVector = {
-        CGVector(dx: -1.0, dy: 0)
-    }()
-    
-    var leftConstraint: NSLayoutConstraint!
-
-    var originalPosition: CGPoint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,19 +28,11 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 
         DispatchQueue.main.async {
             self.operationHistoryTableView.addSubview(clearHistoryControl)
-            self.dragView.layer.cornerRadius = 2
-            self.dragView.alpha = 0.2
-        
-            let swipeGestureRecognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(CalculatorViewController.showUnitConverter))
-            swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirection.right
-            self.view.addGestureRecognizer(swipeGestureRecognizer)
         }
         
         DispatchQueue.global().async {
             self.operationHistoryTableView.delegate = self
             self.operationHistoryTableView.dataSource = self
-//            let dragViewGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(CalculatorViewController.dragView(recognizer:)))
-//            self.dragView.addGestureRecognizer(dragViewGestureRecognizer)
             
             //  Initialize all the buttons with the necessary actions when a certian action is executed
             for button in self.buttonCollection {
@@ -65,67 +48,25 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
                 //  Add a long press gesture recognizer to the clear button so that we can have both a clear and backspace action for the clear button
                 if button.currentTitle == "\u{232B}" {
                     let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(CalculatorViewController.clearOperationLabel(sender:)))
-                    longPressRecognizer.minimumPressDuration = 0.24
+                    longPressRecognizer.minimumPressDuration = 0.19
                     button.addGestureRecognizer(longPressRecognizer)
                 }
             }
             self.buttonCollection.removeAll()
         }
-        originalPosition = self.dragView.center
     }
-    
-    func showUnitConverter() {
-        self.performSegue(withIdentifier: "pickerViewSegue", sender: self)
-    }
-    
-//    var prev: CGFloat = 0
-//    func dragView(recognizer: UIPanGestureRecognizer) {
-//        let point = recognizer.location(in: self.view);
-//        self.dragView.center.x = point.x
-//        
-//        while prev != point.x {
-//            self.dragView.alpha -= 0.007
-//            prev = self.dragView.center.x
-//            if self.dragView.center == self.view.center {
-//                DispatchQueue.main.async {
-//                    self.performSegue(withIdentifier: "pickerViewSegue", sender: self)
-//                }
-//            }
-//        }
-//
-//        switch recognizer.state {
-//            
-//        case .changed:
-//            //                let center = recognizer.translation(in: self.view)
-//            //                self.dragView.center = CGPoint(x: self.dragView.center.x + self.originalPosition.x, y: self.dragView.center.y)
-//            recognizer.setTranslation(CGPoint.zero, in: self.view)
-//            
-//        case .ended:
-//            DispatchQueue.main.async {
-//                UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
-//                    self.dragView.center = self.originalPosition
-//                    self.dragView.alpha = 0.2
-//                }, completion: nil)
-//            }
-//            
-//            
-//        default:
-//            break
-//        }
-//        
-//    }
     
     private var operandStack = [String]()
     private var previousOp = String()
     
+    private lazy var operationHistory = [MathematicalOperation]()
+    
     private let calculator = Calculator()
     
-    private let numbers = ["1", "2","3","4","5","6","7","8","9","0","."]
-    private let ops = ["(",")","÷","×","−","+"]
+    private static let numbers = ["1", "2","3","4","5","6","7","8","9","0","."]
+    private static let ops = ["(",")","÷","×","−","+"]
     
-    lazy var operationHistory = [MathematicalOperation]()
-    
-    private let formatter: NumberFormatter = {
+    private static let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 5
@@ -167,21 +108,14 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         calculator.clear()  //  Clear the calculator's accumlator so that we get an accurate result
         
         //  Format the result with the pre-determine settings so that the number is "pretty"
-        let formattedResult = formatter.string(from: NSNumber.init(value: calculationResult))
+        let formattedResult = CalculatorViewController.formatter.string(from: NSNumber.init(value: calculationResult))
         
         answerLabel.text = formattedResult
         
         //  Create an operation object, which is used ot store the recently performed operation and the resulting answer to that operation
         let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack)
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        let managedObjectContext = appDelegate.managedObjectContext
-//        let operation_CoreData = NSEntityDescription.insertNewObject(forEntityName: "operation", into: managedObjectContext) as! MathematicalOperation
-//    
-//        do {
-//            try managedObjectContext.save()
-//        } catch NSMangedObjectContext {
-//            <#statements#>
-//        }
+//        let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack, context:  )
+
         
         //  Add the operation to the history array so that the table view can be updated with accurate data
         operationHistory.append(operation)
@@ -203,7 +137,6 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     */
     private func calculate() -> Double {
         var stack = self.operandStack
-        var result = 0.0
         
         if (stack.contains("")) {
             var i = 0
@@ -219,6 +152,8 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         }
 
         guard stack.count >= 3 else { return Double(stack[0])! }
+        
+        var result = 0.0
         
         while stack.count >= 3 {
             
@@ -285,13 +220,13 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         let operation = self.operationHistory[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "OperationCell") as? OperationHistoryCell!
         
-        cell?.resultLabel.text = formatter.string(from: NSNumber.init(value: operation.getResult()))
+        cell?.resultLabel.text = CalculatorViewController.formatter.string(from: NSNumber.init(value: operation.getResult()))
         
         var operationStr = ""
         
         for s in operation.getOperandStack() {
             let character: String!
-            if ops.contains(s) {
+            if CalculatorViewController.ops.contains(s) {
                 character = " " + s + " "
             } else {
                 character = s
@@ -309,7 +244,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         //  Can't use 'updateOpLabel(text: String)' because we are updating the table view cell's label
         for i in 0..<operationStr.characters.count {
             index = operationStr.index(operationStr.startIndex, offsetBy: i)
-            if self.ops.contains(String(operationStr[index])) {
+            if CalculatorViewController.ops.contains(String(operationStr[index])) {
                 let attributedStringChar = NSAttributedString(string: String(operationStr[index]), attributes: self.attributeGreen)
                 attributedString.append(attributedStringChar)
             } else {
@@ -343,7 +278,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
             
             for i in 0..<text.characters.count {
                 index = text.index(text.startIndex, offsetBy: i)
-                if self.ops.contains(String(text[index])) {
+                if CalculatorViewController.ops.contains(String(text[index])) {
                     let attributedStringChar = NSAttributedString(string: String(text[index]), attributes: self.attributeGreen)
                     attributedString.append(attributedStringChar)
                 } else {
@@ -411,12 +346,12 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
             
             var character = (sender.currentTitle)!  //  Read the button's title so that the appropriate action can be executed
             
-            if (character == "\u{232B}" || character == "＝") || (self.operationLabel.text == "  0" && self.ops.contains(character)) { return }
+            if (character == "\u{232B}" || character == "＝") || (self.operationLabel.text == "  0" && CalculatorViewController.ops.contains(character)) { return }
             
             var mustBeNumber = false
             if self.operationLabel.text?[(self.operationLabel.text?.index(before: (self.operationLabel.text?.endIndex)!))!] == " " || self.operationLabel.text?[(self.operationLabel.text?.index(before: (self.operationLabel.text?.endIndex)!))!] == "."  {
                 mustBeNumber = true
-                if ((mustBeNumber) && !self.numbers.contains(character)) { return }
+                if ((mustBeNumber) && !CalculatorViewController.numbers.contains(character)) { return }
             }
             
             if self.operationLabel.text == "  0" || self.answerLabel.text == "  ERROR" {
@@ -425,7 +360,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
                 }
             }
             
-            if self.ops.contains(character) && character != "±" {
+            if CalculatorViewController.ops.contains(character) && character != "±" {
                 character = " " + character + " "
             }
             
@@ -447,7 +382,6 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
                     } else {
                         let end = self.operationLabel.text?.characters.last
                         self.updateOpLabel(text: "\(String(self.operationLabel.text!.characters.dropLast()))-\(end!)")
-//                        self.updateOpLabel(text: String(self.operationLabel.text!.characters.dropLast()) + "-\(end)")
                     }
                 }
                 return

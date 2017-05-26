@@ -72,7 +72,7 @@ class Calculator {
     
     private var operations: [String: Operation] = [
         "rand": Operation.NullaryOperation(drand48, "rand()"),
-        "π": Operation.Constant(M_PI),
+        "π": Operation.Constant(Double.pi),
         "e": Operation.Constant(M_E),
         "±": Operation.UnaryOperation({ -$0 }, { "±(" + $0 + ")"}),
         "√": Operation.UnaryOperation(sqrt, { "√(" + $0 + ")"}),

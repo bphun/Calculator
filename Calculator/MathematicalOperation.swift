@@ -13,8 +13,8 @@ import CoreData
 //
 //    @NSManaged var result: Float64
 //    @NSManaged var operandStack: [String]?
-//
-//    convenience public init(result: Float64, operandStack: [String], context: NSManagedObjectContext) {
+//    
+//    public init(result: Float64, operandStack: [String], context: NSManagedObjectContext) {
 //        let entity = NSEntityDescription.entity(forEntityName: "OperationHistory", in: context)!
 //        self.init(entity: entity, insertInto: context)
 //
