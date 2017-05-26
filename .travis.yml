@@ -2,4 +2,4 @@ language: swift
 xcode_project: Calculator.xcodeproj
 xcode_scheme: CalculatorTests
 osx_image: xcode8.3
-iphonesimulator10.3
+xcode_sdk: iphonesimulator10.3
