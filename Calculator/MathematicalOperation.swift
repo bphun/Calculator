@@ -16,7 +16,7 @@ import CoreData
 //    
 //    public init(result: Float64, operandStack: [String], context: NSManagedObjectContext) {
 //        let entity = NSEntityDescription.entity(forEntityName: "OperationHistory", in: context)!
-//        self.init(entity: entity, insertInto: context)
+//        super.init(entity: entity, insertInto: context)
 //
 //        self.result = result
 //        self.operandStack = operandStack
