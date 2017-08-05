@@ -17,7 +17,7 @@ class MathematicalOperation {
         self.result = result
         self.operandStack = operandStack
     }
-    
+
     public func getResult() -> Float64 {
         return result
     }

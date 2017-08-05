@@ -2,12 +2,11 @@
 //  CalculatorTests.swift
 //  CalculatorTests
 //
-//  Created by Brandon Phan on 7/23/16.
-//  Copyright © 2016 Brandon Phan. All rights reserved.
+//  Created by Brandon Phan on 8/4/17.
+//  Copyright © 2017 Brandon Phan. All rights reserved.
 //
 
 import XCTest
-@testable import Calculator
 
 class CalculatorTests: XCTestCase {
     
@@ -30,12 +29,6 @@ class CalculatorTests: XCTestCase {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
-            
-            let operandStack = ["10", "+", "63.2"]
-            let calculator = Calculator(operandStack: operandStack)
-            let calculationResult = calculator.evaluate()
-            print("Result: \(calculationResult)")
-            
         }
     }
     

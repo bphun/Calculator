@@ -27,7 +27,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     private static let ERROR_STR = "  ERROR"
     private static let DELETE_SYMBOL = "\u{232B}"
     private static let CLEAR_TEXT = "  0"
-    private static let formatter: NumberFormatter = {
+    private static let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 5
@@ -38,8 +38,8 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     private static let OPS = ["(",")","÷","×","−","+"]
     private static let NUMBERS = ["1", "2","3","4","5","6","7","8","9","0","."]
    
-    private let attributeGreen = [NSForegroundColorAttributeName: UIColor.init(hex: 0x22C663)]
-    private let attributeGrey = [NSForegroundColorAttributeName: UIColor.init(hex: 0x787878)]
+    private let attributeGreen = [NSAttributedStringKey.foregroundColor: UIColor.init(hex: 0x22C663)]
+    private let attributeGrey = [NSAttributedStringKey.foregroundColor: UIColor.init(hex: 0x787878)]
     
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "CoreDataModel")
@@ -126,7 +126,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         calculator.clear()  //  Clear the calculator's accumlator so that we get an accurate result next time we run the calculate method
         
         //  Format the result with the pre-determine settings so that the number is "pretty"
-        let formattedResult = CalculatorViewController.formatter.string(from: NSNumber.init(value: calculationResult))
+        let formattedResult = CalculatorViewController.numberFormatter.string(from: NSNumber.init(value: calculationResult))
         
         answerLabel.text = formattedResult
         
@@ -168,11 +168,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         }
         
         if (containsParen) {
-            
-            var splitOpStack = [[String]]()
-            
             print(operandStack.split(separator: ")"))
-            
         } else {
             guard operandStack.count >= 3 else { return Double(operandStack[0])! }
             
@@ -245,7 +241,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
         let operation = self.operationHistory[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "OperationCell") as? OperationHistoryCell!
         
-        cell?.resultLabel.text = CalculatorViewController.formatter.string(from: NSNumber.init(value: operation.getResult()))
+        cell?.resultLabel.text = CalculatorViewController.numberFormatter.string(from: NSNumber.init(value: operation.getResult()))
         
         var operationStr = ""
         
@@ -338,7 +334,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
      * from the tableView in the view by pulling down on
      * the tableView until a UIActivityIndicatorView appears
      */
-    func clearHistory(refreshControl: UIRefreshControl) {
+    @objc func clearHistory(refreshControl: UIRefreshControl) {
         DispatchQueue.main.async {
             //  Remove all past operations from the array so that we can clear the table view
             self.operationHistory.removeAll()
@@ -348,7 +344,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     //  The method used to animate the tap of a UIButton
-    func buttontapped(sender: UIButton) {
+    @objc func buttontapped(sender: UIButton) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.09, delay: 0, options: .curveLinear, animations: {
                 sender.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -357,7 +353,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     //  The method used to animate the release of a UIButton
-    func buttonReleased(sender: UIButton) {
+    @objc func buttonReleased(sender: UIButton) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.09, delay: 0, options: .curveLinear, animations: {
                 sender.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -366,7 +362,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     //  Method used to detect a tap in any of the view's UIButtons and execute the appropriate action for the button
-    func buttonAction(sender: UIButton) {
+    @objc func buttonAction(sender: UIButton) {
         DispatchQueue.global().async {
             
             var character = (sender.currentTitle)!  //  Read the button's title so that the appropriate action can be executed
@@ -448,7 +444,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
      * Clears the text field after a long press is detected
      * on the clear button
      */
-    func clearOperationLabel(sender: UIButton) {
+    @objc func clearOperationLabel(sender: UIButton) {
         guard self.operationLabel.text != CalculatorViewController.CLEAR_TEXT else {
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.09, delay: 0, options: .curveLinear, animations: {

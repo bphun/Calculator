@@ -18,8 +18,8 @@ class InterfaceController: WKInterfaceController {
     
     var opLabelText = "  0"
     
-    private let attributeGreen = [NSForegroundColorAttributeName: UIColor.init(hex: 0x22C663) ]
-    private let attributeGrey = [NSForegroundColorAttributeName: UIColor.init(hex: 0x787878) ]
+    private let attributeGreen = [NSAttributedStringKey.foregroundColor: UIColor.init(hex: 0x22C663) ]
+    private let attributeGrey = [NSAttributedStringKey.foregroundColor: UIColor.init(hex: 0x787878) ]
     
     private let numbers = ["1", "2","3","4","5","6","7","8","9","0","."]
     private let ops = ["(",")","÷","×","−","+"]
