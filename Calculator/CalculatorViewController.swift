@@ -17,18 +17,16 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	@IBOutlet weak var operationLabel: UILabel!
 	@IBOutlet weak var operationHistoryTableView: UITableView!
 	
-	private var operandStack = [String]()
-	private var previousOp = String()
-	
-	private lazy var operationHistory = [MathematicalOperation]()
-	
-	private let calculator = Calculator()
+	private var operandStack: [String]!
+	private var previousOp: String!
+	private var operationHistory: [MathematicalOperation]!
+	private var calculator: Calculator!
 	
 	private let EQUAL_SIGN_STR = "＝"
 	private let ERROR_STR = "  ERROR"
 	private let DELETE_SYMBOL = "\u{232B}"
 	private let CLEAR_TEXT = "  0"
-	private let formatter: NumberFormatter = {
+	private let FORMATTER: NumberFormatter = {
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .decimal
 		formatter.maximumFractionDigits = 5
@@ -38,12 +36,16 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	}()
 	private let NUMBERS = ["1", "2","3","4","5","6","7","8","9","0","."]
 	private let OPS = ["(",")","÷","×","−","+"]
-	
 	private let ATTRIBUTE_GREEN = [NSAttributedStringKey.foregroundColor: UIColor.init(hex: 0x22C663) ]
 	private let ATTRIBUTE_GREY = [NSAttributedStringKey.foregroundColor: UIColor.init(hex: 0x787878) ]
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		calculator = Calculator()
+		operationHistory = [MathematicalOperation]()
+		previousOp = String()
+		operandStack = [String]()
 		
 		//  Create the refresh action for the table view so that we can clear the table view when the user pulls down on the table view
 		let clearHistoryControl = UIRefreshControl()
@@ -52,7 +54,6 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		
 		DispatchQueue.main.async {
 			self.operationHistoryTableView.addSubview(clearHistoryControl)
-			
 			
 			self.operationHistoryTableView.delegate = self
 			self.operationHistoryTableView.dataSource = self
@@ -68,7 +69,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 				button.addTarget(self, action: #selector(CalculatorViewController.buttonReleased(sender:)), for: .touchUpInside)
 				button.addTarget(self, action: #selector(CalculatorViewController.buttonReleased(sender:)), for: .touchDragExit)
 				
-				//  Add a long press gesture recognizer to the clear button so that we can have both a clear and backspace action for the clear button
+				//  Add a long press gesture recognizer to the clear button so that we can have both a clear and backspace action for the  button
 				if button.currentTitle == self.DELETE_SYMBOL {
 					let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(CalculatorViewController.clearOperationLabel(sender:)))
 					longPressRecognizer.minimumPressDuration = 0.19
@@ -87,9 +88,10 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		operandStack = (operationLabel.text?.components(separatedBy: " "))!
 		
 		// Remove the first two spaces before the initial number, the spaces are there for cosmetic reasons
-		for _ in 0...1 {
-			operandStack.remove(at: 0)
-		}
+		//		for _ in 0...1 {
+		//			operandStack.remove(at: 0)
+		//		}
+		operandStack.removeFirst(2)
 		
 		/* Determine if the previous operation is the same as the one in the text field, if so return
 		* then determine if there is an adequate number operands in the label, if not return
@@ -109,7 +111,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		calculator.clear()  //  Clear the calculator's accumlator so that we get an accurate result
 		
 		//  Format the result with the pre-determine settings so that the number is "pretty"
-		let formattedResult = formatter.string(from: NSNumber.init(value: calculationResult))
+		let formattedResult = FORMATTER.string(from: NSNumber.init(value: calculationResult))
 		
 		answerLabel.text = formattedResult
 		
@@ -136,7 +138,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	* This method does the actual calculation,
 	*/
 	private func calculate() -> Double {
-		var stack = self.operandStack
+		var stack = self.operandStack!
 		
 		if (stack.contains("")) {
 			var i = 0
@@ -164,13 +166,12 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 			
 			result = calculator.result
 			
-			for _ in 0..<3 {
-				stack.remove(at: 0)
-			}
+			stack.removeFirst(3)
 			
-			if stack.count == 0 {
+			switch stack.count {
+			case 0:
 				return result
-			} else if stack.count >= 2 {
+			default:
 				calculator.clear()
 				stack.append(String(format: "%.0f", result))
 				stack = stack.shiftedRight()
@@ -202,9 +203,9 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	* label
 	*/
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let operation = self.operationHistory[indexPath.row]
 		clearTextField()
-		updateOpLabel(text: formatter.string(from: NSNumber.init(value: operation.getResult()))!)
+		let operation = self.operationHistory[indexPath.row]
+		updateOpLabel(text: FORMATTER.string(from: NSNumber.init(value: operation.getResult()))!)
 	}
 	
 	/*
@@ -217,7 +218,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		let operation = self.operationHistory[indexPath.row]
 		let cell = tableView.dequeueReusableCell(withIdentifier: "OperationCell") as? OperationHistoryCell!
 		
-		cell?.resultLabel.text = formatter.string(from: NSNumber.init(value: operation.getResult()))
+		cell?.resultLabel.text = FORMATTER.string(from: NSNumber.init(value: operation.getResult()))
 		
 		var operationStr = ""
 		
@@ -394,6 +395,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 			} else {
 				opLabelString = self.operationLabel.text! + character
 			}
+			
 			self.updateOpLabel(text: opLabelString)
 		}
 	}
@@ -401,7 +403,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	//  Removes the last character from the string when a tap is detected in the clear button and update operationLabel
 	@IBAction func clearButtonTap(_ sender: Any) {
 		guard self.operationLabel.text != CLEAR_TEXT && self.operationLabel.text != ERROR_STR else { return }
-
+		
 		if self.operationLabel.text?.characters.last == " " {
 			updateOpLabel(text: String(self.operationLabel.text!.characters.dropLast(2)))
 			if self.operationLabel.text?.trimmingCharacters(in: .whitespaces) == "" {
@@ -453,5 +455,4 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 			print("Could not save \(error), \(error.userInfo)")
 		}
 	}
-	
 }
