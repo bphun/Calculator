@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13156.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="AvenirNext.ttc">
+            <string>AvenirNext-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Calculator View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -18,7 +19,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Shc-Dx-yQh">
@@ -257,8 +258,8 @@
                     <connections>
                         <outlet property="answerLabel" destination="8TR-Wp-Wgg" id="iid-ui-Xpb"/>
                         <outlet property="clearButton" destination="Shc-Dx-yQh" id="LLX-gK-1Bd"/>
+                        <outlet property="opLabel" destination="iEz-6r-x7f" id="sbL-3a-Yv4"/>
                         <outlet property="operationHistoryTableView" destination="z7h-ev-NVT" id="gat-v6-Cr5"/>
-                        <outlet property="operationLabel" destination="iEz-6r-x7f" id="sbL-3a-Yv4"/>
                         <outletCollection property="buttonCollection" destination="aSx-T3-vwe" collectionClass="NSMutableArray" id="Ylk-A5-KBv"/>
                         <outletCollection property="buttonCollection" destination="8gD-yT-cEJ" collectionClass="NSMutableArray" id="CuJ-3c-9Cv"/>
                         <outletCollection property="buttonCollection" destination="fYr-Xk-NPa" collectionClass="NSMutableArray" id="fpG-Yt-GGC"/>

@@ -2,7 +2,7 @@
 //  CalculatorTests.swift
 //  CalculatorTests
 //
-//  Created by Brandon Phan on 8/18/17.
+//  Created by Brandon Phan on 8/20/17.
 //  Copyright © 2017 Brandon Phan. All rights reserved.
 //
 
@@ -10,21 +10,58 @@ import XCTest
 
 class CalculatorTests: XCTestCase {
 	
-	var calculator: Calculator!
+	private let TEST_MODE = 0
+	
+	private var calculator: Calculator!
+	private var operandStack: [String]!
+	
+	private var prevOp: String!
+	private var answerLabel: UILabel!
+	private var opLabel: UILabel!
+	private let CLEAR_TEXT = "  0"
+	private let ERROR_STR = "  ERROR"
 	
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+		
 		calculator = Calculator()
+
+		switch TEST_MODE {
+		case 0:
+			operandStack = ["10","*","11"]
+			break
+		case 1:
+			operandStack = ["10","*","11"]
+			prevOp = ""
+			answerLabel = UILabel()
+			opLabel = UILabel()
+			break
+		default:
+			break
+		}
 	}
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-    }
+		
+		calculator = nil
+		
+		switch TEST_MODE {
+		case 0:
+			operandStack = nil
+			break
+		case 1:
+			prevOp = nil
+			answerLabel = nil
+			opLabel = nil
+			operandStack = nil
+		default:
+			break
+		}
+		
+	}
     
 	func calculate() -> Double {
-		var operandStack = ["10","*","11"]
 		var result = 0.0
 		
 		guard operandStack[2] != "" else { return Double(operandStack[0])! }
@@ -38,17 +75,26 @@ class CalculatorTests: XCTestCase {
 			
 			result = calculator.result
 			
-			for _ in 0..<3 {
-				operandStack.remove(at: 0)
-			}
-//			operandStack.removeFirst(3)
+//			for _ in 0..<3 {
+//				operandStack.remove(at: 0)
+//			}
+			operandStack.removeFirst(3)
 			
-			if operandStack.count == 0 {
+//			if operandStack.count == 0 {
+//				return result
+//			} else if operandStack.count >= 2 {
+//				calculator.clear()
+//				operandStack.append(String(format: "%.0f", result))
+//				operandStack = operandStack.shiftedRight()
+//			}
+			switch operandStack.count {
+			case 0:
 				return result
-			} else if operandStack.count >= 2 {
+			default:
 				calculator.clear()
 				operandStack.append(String(format: "%.0f", result))
 				operandStack = operandStack.shiftedRight()
+				break
 			}
 		}
 		
@@ -57,31 +103,26 @@ class CalculatorTests: XCTestCase {
 		return result
 	}
 	
-    func calculatePerformancetest() {
-        // This is an example of a performance test case.
-        self.measure {
-		   print(calculate())
-        }
-    }
+	func clearTextField() {
+		if opLabel.text != CLEAR_TEXT || answerLabel.text == ERROR_STR {
+			opLabel.text = CLEAR_TEXT
+			answerLabel.text = "0"
+			calculator.clear()
+			operandStack.removeAll()
+			prevOp = ""
+		}
+	}
+	
+	func testPerformance_calculate() {
+		self.measure {
+			XCTAssert(calculate() != 110, "Calculate returned incorrect value")
+		}
+	}
+	
+	func testPerformance_clearTextField() {
+		self.measure {
+			clearTextField()
+		}
+	}
     
-}
-
-extension Array {
-	func shiftedLeft(by rawOffset: Int = 1) -> Array {
-		let clampedAmount = rawOffset % count
-		let offset = clampedAmount < 0 ? count + clampedAmount : clampedAmount
-		return Array(self[offset ..< count] + self[0 ..< offset])
-	}
-	
-	func shiftedRight(by rawOffset: Int = 1) -> Array {
-		return self.shiftedLeft(by: -rawOffset)
-	}
-	
-	mutating func shiftLeft(by rawOffset: Int = 1) {
-		self = self.shiftedLeft(by: rawOffset)
-	}
-	
-	mutating func shiftRight(by rawOffset: Int = 1) {
-		self = self.shiftedRight(by: rawOffset)
-	}
 }

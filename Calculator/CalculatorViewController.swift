@@ -14,11 +14,11 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	
 	@IBOutlet weak var clearButton: UIButton!
 	@IBOutlet weak var answerLabel: UILabel!
-	@IBOutlet weak var operationLabel: UILabel!
+	@IBOutlet weak var opLabel: UILabel!
 	@IBOutlet weak var operationHistoryTableView: UITableView!
 	
 	private var operandStack: [String]!
-	private var previousOp: String!
+	private var prevOp: String!
 	private var operationHistory: [MathematicalOperation]!
 	private var calculator: Calculator!
 	
@@ -44,7 +44,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		
 		calculator = Calculator()
 		operationHistory = [MathematicalOperation]()
-		previousOp = String()
+		prevOp = String()
 		operandStack = [String]()
 		
 		//  Create the refresh action for the table view so that we can clear the table view when the user pulls down on the table view
@@ -82,45 +82,51 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	
 	@IBAction func solveButton(_ sender: UIButton) {
 		
-		/* Populate operandStack by using regular expressions, in this case it is just one empty space
-		* example: "3 + 3" -> ["3", "+", "3"]
-		*/
-		operandStack = (operationLabel.text?.components(separatedBy: " "))!
+		/*
+		 * Populate operandStack by using regular expressions. In this case, split at every space
+		 * example: "3 + 3" -> ["3", "+", "3"]
+		 */
+		operandStack = (opLabel.text?.components(separatedBy: " "))!
 		
-		// Remove the first two spaces before the initial number, the spaces are there for cosmetic reasons
-		//		for _ in 0...1 {
-		//			operandStack.remove(at: 0)
-		//		}
 		operandStack.removeFirst(2)
 		
-		/* Determine if the previous operation is the same as the one in the text field, if so return
-		* then determine if there is an adequate number operands in the label, if not return
-		*/
-		if (previousOp == operationLabel.text) || ((operandStack.count < 3) && (previousOp != operationLabel.text)) {
+		var i = 0
+		for o in operandStack {
+			if o == "" {
+				operandStack.remove(at: i)
+			}
+			i += 1
+		}
+		
+		if prevOp == opLabel.text || OPS.contains(operandStack[operandStack.count - 1]){
 			DispatchQueue.main.async {
 				self.answerLabel.text = self.ERROR_STR
 				self.operandStack.removeAll()
-				self.delay(3, closure: {
+				self.delay(1, closure: {
 					self.answerLabel.text = "0"
 				})
 			}
 			return
 		}
 		
+//		if (previousOp == operationLabel.text) || ((operandStack.count < 3) && (previousOp != operationLabel.text)) {
+//			DispatchQueue.main.async {
+//				self.answerLabel.text = self.ERROR_STR
+//				self.operandStack.removeAll()
+//				self.delay(3, closure: {
+//					self.answerLabel.text = "0"
+//				})
+//			}
+//			return
+//		}
+		
 		let calculationResult = calculate()
 		calculator.clear()  //  Clear the calculator's accumlator so that we get an accurate result
 		
-		//  Format the result with the pre-determine settings so that the number is "pretty"
-		let formattedResult = FORMATTER.string(from: NSNumber.init(value: calculationResult))
-		
-		answerLabel.text = formattedResult
-		
-		//  Create an operation object, which is used ot store the recently performed operation and the resulting answer to that operation
-		let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack)
-		//        let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack, context:  )
+		answerLabel.text = FORMATTER.string(from: NSNumber.init(value: calculationResult))
 		
 		//  Add the operation to the history array so that the table view can be updated with accurate data
-		operationHistory.append(operation)
+		operationHistory.append(MathematicalOperation(result: calculationResult, operandStack: operandStack))
 		operationHistoryTableView.reloadData()
 		
 		//  Scroll to the bottom of the table view so taht the user can see all their most recent operation
@@ -129,8 +135,8 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 			operationHistoryTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
 		}
 		
-		operandStack.removeAll()    // Clear the operand stack becuase we don't need it any more and to reduce memory usage
-		previousOp = operationLabel.text!   //  Update previous op variable with the operation that was just completed so that we can use it to check with the next operation
+		operandStack.removeAll()
+		prevOp = opLabel.text!
 	}
 	
 	/*
@@ -198,18 +204,32 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	}
 	
 	/*
-	* This method determines what table view cell was pressed and fetches the
+	* Determines what table view cell was pressed and fetches the
 	* result of the operation from that cell and places the result in the operation
 	* label
 	*/
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		clearTextField()
 		let operation = self.operationHistory[indexPath.row]
-		updateOpLabel(text: FORMATTER.string(from: NSNumber.init(value: operation.getResult()))!)
+		
+		DispatchQueue.main.async {
+			if self.opLabel.text == self.CLEAR_TEXT {
+				self.updateOpLabel(text: String(operation.getResult()))
+			} else {
+				self.updateOpLabel(text: self.opLabel.text! + String(operation.getResult()))
+			}
+		}
+
+		
+//		if opLabel.text == CLEAR_TEXT {
+//			updateOpLabel(text: FORMATTER.string(from: NSNumber.init(value: operation.getResult()))!)
+//		} else {
+//			updateOpLabel(text: opLabel.text! + FORMATTER.string(from: NSNumber.init(value: operation.getResult()))!)
+//		}
 	}
 	
 	/*
-	* This method is used for the initial creation of the table view cells and for refreshing the
+	* Used for the initial creation of the table view cells and for refreshing the
 	* table view when tableView.reloadTableData() is called. In this method, the operation object
 	* that corresponds with the table view cell is loaded and used to initialize the two labels
 	* in the cell with the appropriate data(Operation and the result of that operation)
@@ -235,7 +255,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		var index: String.Index!
 		let attributedString = NSMutableAttributedString()
 		
-		if operationLabel.text == CLEAR_TEXT {
+		if opLabel.text == CLEAR_TEXT {
 			attributedString.append(NSAttributedString(string: "  "))
 		}
 		
@@ -260,7 +280,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	
 	/*
 	* @param text, the string that is replacing the current label text
-	* This method is used to update the operationLabel
+	* Updates the operationLabel
 	* attributed text. This is done by iterating throught 'text'
 	* and determining the type of character it is and applying
 	* the appropriate attribute to it
@@ -269,7 +289,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		var index: String.Index!
 		let attributedString = NSMutableAttributedString()
 		
-		if self.operationLabel.text == CLEAR_TEXT {
+		if opLabel.text == CLEAR_TEXT {
 			attributedString.append(NSAttributedString(string: "  "))
 		}
 		
@@ -284,29 +304,28 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 			}
 		}
 		DispatchQueue.main.async {
-			self.operationLabel.attributedText = attributedString
+			self.opLabel.attributedText = attributedString
 		}
-		
 	}
 	
 	/*
-	* This method is used to reset all the labels in the view
+	* Resets all the labels in the view
 	* to their default state
 	*/
 	func clearTextField() {
-		if operationLabel.text != CLEAR_TEXT || answerLabel.text == ERROR_STR {
-			operationLabel.text = CLEAR_TEXT
+		if opLabel.text != CLEAR_TEXT || answerLabel.text == ERROR_STR {
+			opLabel.text = CLEAR_TEXT
 			answerLabel.text = "0"
 			calculator.clear()
 			operandStack.removeAll()
-			previousOp = ""
+			prevOp = ""
 		}
 	}
 	
 	//  MARK: UI actions
 	
 	/*
-	* This method is used to remove all previous operations
+	* Removes all previous operations
 	* from the tableView in the view by pulling down on
 	* the tableView until a UIActivityIndicatorView appears
 	*/
@@ -323,12 +342,12 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	@objc func buttontapped(sender: UIButton) {
 		DispatchQueue.main.async {
 			UIView.animate(withDuration: 0.09, delay: 0, options: .curveLinear, animations: {
-				sender.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+				sender.transform = CGAffineTransform(scaleX: 0.92, y: 0.92)
 			})
 		}
 	}
 	
-	//  The method used to animate the release of a UIButton
+	//  Animate the release of a UIButton
 	@objc func buttonReleased(sender: UIButton) {
 		DispatchQueue.main.async {
 			UIView.animate(withDuration: 0.09, delay: 0, options: .curveLinear, animations: {
@@ -337,30 +356,30 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		}
 	}
 	
-	//  Method used to detect a tap in any of the view's UIButtons and execute the appropriate action for the button
+	//  Detect a tap in any of the view's UIButtons and execute the appropriate action for the button
 	@objc func buttonAction(sender: UIButton) {
 		var character = (sender.currentTitle)!  //  Read the button's title so that the appropriate action can be executed
 		
-		if (character == DELETE_SYMBOL || character == EQUAL_SIGN_STR) || (self.operationLabel.text == CLEAR_TEXT && OPS.contains(character)) { return }
+		if (character == DELETE_SYMBOL || character == EQUAL_SIGN_STR) || (opLabel.text == CLEAR_TEXT && OPS.contains(character)) { return }
 		
 		var mustBeNumber = false
-		if self.operationLabel.text?[(self.operationLabel.text?.index(before: (self.operationLabel.text?.endIndex)!))!] == " " || self.operationLabel.text?[(self.operationLabel.text?.index(before: (self.operationLabel.text?.endIndex)!))!] == "."  {
+		if opLabel.text?[(opLabel.text?.index(before: (opLabel.text?.endIndex)!))!] == " " || opLabel.text?[(opLabel.text?.index(before: (opLabel.text?.endIndex)!))!] == "."  {
 			mustBeNumber = true
 			if ((mustBeNumber) && !NUMBERS.contains(character)) { return }
 		}
 		
-		if self.operationLabel.text == CLEAR_TEXT || self.answerLabel.text == ERROR_STR {
+		if opLabel.text == CLEAR_TEXT || self.answerLabel.text == ERROR_STR {
 			DispatchQueue.main.async {
-				self.operationLabel.text = "  "
+				self.opLabel.text = "  "
 			}
 		}
 		
-		if OPS.contains(character) && character != "±" {
+		if OPS.contains(character) /*&& character != "±"*/ {
 			character = " " + character + " "
 		}
 		
-		if character == "( / )" /*&& self.operationLabel.text != CLEAR_TEXT*/ {
-			if (self.operationLabel.text?.contains("("))! {
+		if character == "( / )" /*&& operationLabel.text != CLEAR_TEXT*/ {
+			if (opLabel.text?.contains("("))! {
 				character = ")"
 			} else {
 				character = "("
@@ -368,32 +387,32 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 			
 		}
 		
-		if character == "±" && self.operationLabel.text != CLEAR_TEXT {
-			if self.operationLabel.text?.characters.first == "-" {
-				self.updateOpLabel(text: String(self.operationLabel.text!.characters.dropFirst()))
+		if character == "±" && opLabel.text != CLEAR_TEXT {
+			if opLabel.text?.characters.first == "-" {
+				self.updateOpLabel(text: String(opLabel.text!.characters.dropFirst()))
 				
 			} else {
-				if self.operationLabel.text!.characters.count <= 4 {
-					self.updateOpLabel(text: "  -\(String(self.operationLabel.text!.characters.dropFirst(2)))")
+				if opLabel.text!.characters.count <= 4 {
+					self.updateOpLabel(text: "  -\(String(opLabel.text!.characters.dropFirst(2)))")
 				} else {
-					let end = self.operationLabel.text?.characters.last
-					self.updateOpLabel(text: "\(String(self.operationLabel.text!.characters.dropLast()))-\(end!)")
+					let end = opLabel.text?.characters.last
+					self.updateOpLabel(text: "\(String(opLabel.text!.characters.dropLast()))-\(end!)")
 				}
 			}
 			return
-		} else if character == "±" && self.operationLabel.text == CLEAR_TEXT {
+		} else if character == "±" && opLabel.text == CLEAR_TEXT {
 			DispatchQueue.main.async {
-				self.operationLabel.text = self.CLEAR_TEXT
+				self.opLabel.text = self.CLEAR_TEXT
 			}
 			return
 		}
 		
 		DispatchQueue.main.async {
 			var opLabelString = String()
-			if (self.operationLabel.text! == self.CLEAR_TEXT) {
-				opLabelString = "  " + self.operationLabel.text! + character
+			if (self.opLabel.text! == self.CLEAR_TEXT) {
+				opLabelString = "  " + self.opLabel.text! + character
 			} else {
-				opLabelString = self.operationLabel.text! + character
+				opLabelString = self.opLabel.text! + character
 			}
 			
 			self.updateOpLabel(text: opLabelString)
@@ -402,24 +421,35 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	
 	//  Removes the last character from the string when a tap is detected in the clear button and update operationLabel
 	@IBAction func clearButtonTap(_ sender: Any) {
-		guard self.operationLabel.text != CLEAR_TEXT && self.operationLabel.text != ERROR_STR else { return }
-		
-		if self.operationLabel.text?.characters.last == " " {
-			updateOpLabel(text: String(self.operationLabel.text!.characters.dropLast(2)))
-			if self.operationLabel.text?.trimmingCharacters(in: .whitespaces) == "" {
-				updateOpLabel(text: CLEAR_TEXT)
-			}
+		guard opLabel.text != CLEAR_TEXT && opLabel.text != ERROR_STR else { return }
+//		guard opLabel.text?.characters.count > 4 else { updateOpLabel(text: CLEAR_TEXT) }
+
+		if opLabel.text?.characters.count == 4 {
+			updateOpLabel(text: CLEAR_TEXT)
+			return
+		}
+	
+		if opLabel.text?.characters.last == " " {
+			updateOpLabel(text: String(opLabel.text!.characters.dropLast(2)))
+//			if operationLabel.text?.trimmingCharacters(in: .whitespaces) == "" {
+//				updateOpLabel(text: CLEAR_TEXT)
+//			}
 		} else {
-			updateOpLabel(text: (self.operationLabel.text?.substring(to: (self.operationLabel.text?.index(before: (self.operationLabel.text?.endIndex)!))!))!)
+//			updateOpLabel(text: (operationLabel.text?.substring(to: (operationLabel.text?.index(before: (operationLabel.text?.endIndex)!))!))!)
+			opLabel.text?.removeLast(1)
+			updateOpLabel(text: opLabel.text!)
+		}
+		if opLabel.text?.trimmingCharacters(in: .whitespaces) == "" {
+			updateOpLabel(text: CLEAR_TEXT)
 		}
 	}
 	
 	/*
-	* Clears the text field after a long press is detected
+	* Clears the text field when a long press is detected
 	* on the clear button
 	*/
 	@objc func clearOperationLabel(sender: UIButton) {
-		guard self.operationLabel.text != CLEAR_TEXT else {
+		guard opLabel.text != CLEAR_TEXT else {
 			DispatchQueue.main.async {
 				UIView.animate(withDuration: 0.09, delay: 0, options: .curveLinear, animations: {
 					self.clearButton.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -452,7 +482,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		do {
 			try managedContext.save()
 		} catch let error as NSError  {
-			print("Could not save \(error), \(error.userInfo)")
+			print("Could not save context \(error), \(error.userInfo)")
 		}
 	}
 }

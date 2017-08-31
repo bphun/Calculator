@@ -165,11 +165,23 @@ class InterfaceController: WKInterfaceController {
         evaluate()
     }
 	
-    @IBAction func clearButton() {
-        opLabelText = OP_LABEL_CLEAR_TEXT
-        answerLabel.setText("")
-        updateOpLabel(text: opLabelText)
-    }
+    @IBAction func backspaceButton() {
+//		guard opLabelText != OP_LABEL_CLEAR_TEXT else { return }
+//
+//		if opLabelText.characters.last == " " {
+//			updateOpLabel(text: String(opLabelText.characters.dropLast(2)))
+//			if opLabelText.trimmingCharacters(in: .whitespaces) == "" {
+//				updateOpLabel(text: OP_LABEL_CLEAR_TEXT)
+//			}
+//		} else {
+////			updateOpLabel(text: (opLabelText.substring(to: (OP_LABEL_CLEAR_TEXT.index(before: (OP_LABEL_CLEAR_TEXT.endIndex))))))
+//			opLabelText.removeLast(1)
+//			updateOpLabel(text: opLabelText)
+//		}
+		opLabelText = OP_LABEL_CLEAR_TEXT
+		answerLabel.setText("")
+		updateOpLabel(text: opLabelText)
+	}
     
     @IBAction func addButton() {
         guard opLabelText != OP_LABEL_CLEAR_TEXT else { return }
@@ -199,7 +211,13 @@ class InterfaceController: WKInterfaceController {
         evaluate()
     }
     
-    func evaluate() {
+	@IBAction func clearButton() {
+//		opLabelText = OP_LABEL_CLEAR_TEXT
+//		answerLabel.setText("")
+//		updateOpLabel(text: opLabelText)
+	}
+	
+	func evaluate() {
         let calculationResult = calculate()
         calculator.clear()  //  Clear the calculator's accumlator so that we get an accurate result
         answerLabel.setText(FORMATTER.string(from: NSNumber.init(value: calculationResult)))

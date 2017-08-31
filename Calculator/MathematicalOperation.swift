@@ -1,5 +1,5 @@
 //
-//  Operation.swift
+//  MathematicalOperation.swift
 //  Calculator
 //
 //  Created by Brandon Phan on 10/29/16.
@@ -8,28 +8,6 @@
 
 import Foundation
 import CoreData
-
-//class MathematicalOperation: NSManagedObject {
-//
-//    @NSManaged var result: Float64
-//    @NSManaged var operandStack: [String]?
-//    
-//    public init(result: Float64, operandStack: [String], context: NSManagedObjectContext) {
-//        let entity = NSEntityDescription.entity(forEntityName: "OperationHistory", in: context)!
-//        super.init(entity: entity, insertInto: context)
-//
-//        self.result = result
-//        self.operandStack = operandStack
-//    }
-//
-//    public func getResult() -> Float64 {
-//        return result
-//    }
-//
-//    public func getOperandStack() -> [String] {
-//        return operandStack!
-//    }
-//}
 
 class MathematicalOperation {
     
@@ -49,3 +27,26 @@ class MathematicalOperation {
         return operandStack!
     }
 }
+
+//class MathematicalOperation: NSManagedObject {
+//
+//	@NSManaged private var result: Float64
+//	@NSManaged private var operandStack: [String]?
+//
+//	public init(result: Float64, operandStack: [String], context: NSManagedObjectContext) {
+//		let entity = NSEntityDescription.entity(forEntityName: "MathematicalOperation", in: context)!
+//		super.init(entity: entity, insertInto: context)
+//
+//		self.result = result
+//		self.operandStack = operandStack
+//	}
+//
+//	public func getResult() -> Float64 {
+//		return result
+//	}
+//
+//	//	public func operandStack() -> [String] {
+//	//		return operandStack!
+//	//	}
+//}
+

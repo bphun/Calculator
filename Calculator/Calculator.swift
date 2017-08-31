@@ -125,7 +125,6 @@ class Calculator {
     }
     
     private func executeBinaryOperation() {
-        
         if pending != nil{
             accumulator = pending!.binaryOperation(pending!.firstOperand, accumulator)
             descriptionAccumulator = pending!.descriptionFunction(pending!.descriptionOperand, descriptionAccumulator)

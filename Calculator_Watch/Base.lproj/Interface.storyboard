@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13189.4" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch42" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11508"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13049.2"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -107,7 +107,7 @@
                                     <color key="backgroundColor" red="0.8784313725490196" green="0.28235294117647058" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
                                     <fontDescription key="font" type="system" pointSize="15"/>
                                     <connections>
-                                        <action selector="clearButton" destination="AgC-eL-Hgc" id="Kkt-sy-Nah"/>
+                                        <action selector="backspaceButton" destination="AgC-eL-Hgc" id="Yvn-oM-feA"/>
                                     </connections>
                                 </button>
                             </items>
@@ -134,6 +134,11 @@
                             <menuItem title="Subtraction" image="subtraction" id="h7O-Mn-th6" userLabel="subtraction">
                                 <connections>
                                     <action selector="subtractButton" destination="AgC-eL-Hgc" id="bNY-be-9Tu"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Clear" image="clear" id="Daz-Rc-4Ju" userLabel="clear">
+                                <connections>
+                                    <action selector="clearButton" destination="AgC-eL-Hgc" id="pEg-jD-9O6"/>
                                 </connections>
                             </menuItem>
                         </items>
