@@ -39,22 +39,22 @@ class Calculator {
         }
     }
     
-    var description: String {
-        get {
-            if pending == nil {
-                return descriptionAccumulator
-            } else {
-                return pending!.descriptionFunction(pending!.descriptionOperand, pending!.descriptionOperand != descriptionAccumulator ? descriptionAccumulator : "")
-            }
-        }
-    }
-    
-    var isPartialResult: Bool {
-        get {
-            return pending != nil
-        }
-    }
-    
+//    var description: String {
+//        get {
+//            if pending == nil {
+//                return descriptionAccumulator
+//            } else {
+//                return pending!.descriptionFunction(pending!.descriptionOperand, pending!.descriptionOperand != descriptionAccumulator ? descriptionAccumulator : "")
+//            }
+//        }
+//    }
+	
+//    var isPartialResult: Bool {
+//        get {
+//            return pending != nil
+//        }
+//    }
+		
     
     func setOperand(operand: Double) {
         accumulator = operand
@@ -62,7 +62,7 @@ class Calculator {
         internalProgram.append(operand as AnyObject)
     }
     
-    private enum Operation {
+    private enum OperationType {
         case NullaryOperation(() -> Double,String)
         case Constant(Double)
         case UnaryOperation((Double) -> Double,(String) -> String)
@@ -70,27 +70,27 @@ class Calculator {
         case Equals
     }
     
-    private var operations: [String: Operation] = [
-        "rand": Operation.NullaryOperation(drand48, "rand()"),
-        "π": Operation.Constant(Double.pi),
-        "e": Operation.Constant(M_E),
-        "±": Operation.UnaryOperation({ -$0 }, { "±(" + $0 + ")"}),
-        "√": Operation.UnaryOperation(sqrt, { "√(" + $0 + ")"}),
-        "cos": Operation.UnaryOperation(cos,{ "cos(" + $0 + ")"}),
-        "sin": Operation.UnaryOperation(sin,{ "sin(" + $0 + ")"}),
-        "tan": Operation.UnaryOperation(tan,{ "tan(" + $0 + ")"}),
-        "sin⁻¹": Operation.UnaryOperation(asin, { "sin⁻¹(" + $0 + ")"}),
-        "cos⁻¹": Operation.UnaryOperation(acos, { "cos⁻¹(" + $0 + ")"}),
-        "tan⁻¹": Operation.UnaryOperation(atan, { "tan⁻¹(" + $0 + ")"}),
-        "ln": Operation.UnaryOperation(log, { "ln(" + $0 + ")"}),
-        "x⁻¹": Operation.UnaryOperation({ 1.0 / $0}, {"(" + $0 + ")⁻¹"}),
-        "х²": Operation.UnaryOperation({$0 * $0}, { "(" + $0 + ")²"}),
-        "×": Operation.BinaryOperation(*, { $0 + " × " + $1 }, 1),
-        "÷": Operation.BinaryOperation(/, { $0 + " ÷ " + $1 }, 1),
-        "+": Operation.BinaryOperation(+, { $0 + " + " + $1 }, 0),
-        "−": Operation.BinaryOperation(-, { $0 + "-" + $1 }, 0),
-        "xʸ" : Operation.BinaryOperation(pow, { $0 + " ^ " + $1 }, 2),
-        "=": Operation.Equals
+    private var operations: [String : OperationType] = [
+        "rand": OperationType.NullaryOperation(drand48, "rand()"),
+        "π": OperationType.Constant(Double.pi),
+        "e": OperationType.Constant(M_E),
+        "±": OperationType.UnaryOperation({ -$0 }, { "±(" + $0 + ")"}),
+        "√": OperationType.UnaryOperation(sqrt, { "√(" + $0 + ")"}),
+        "cos": OperationType.UnaryOperation(cos,{ "cos(" + $0 + ")"}),
+        "sin": OperationType.UnaryOperation(sin,{ "sin(" + $0 + ")"}),
+        "tan": OperationType.UnaryOperation(tan,{ "tan(" + $0 + ")"}),
+        "sin⁻¹": OperationType.UnaryOperation(asin, { "sin⁻¹(" + $0 + ")"}),
+        "cos⁻¹": OperationType.UnaryOperation(acos, { "cos⁻¹(" + $0 + ")"}),
+        "tan⁻¹": OperationType.UnaryOperation(atan, { "tan⁻¹(" + $0 + ")"}),
+        "ln": OperationType.UnaryOperation(log, { "ln(" + $0 + ")"}),
+        "x⁻¹": OperationType.UnaryOperation({ 1.0 / $0}, {"(" + $0 + ")⁻¹"}),
+        "х²": OperationType.UnaryOperation({$0 * $0}, { "(" + $0 + ")²"}),
+        "×": OperationType.BinaryOperation(*, { $0 + " × " + $1 }, 1),
+        "÷": OperationType.BinaryOperation(/, { $0 + " ÷ " + $1 }, 1),
+        "+": OperationType.BinaryOperation(+, { $0 + " + " + $1 }, 0),
+        "−": OperationType.BinaryOperation(-, { $0 + "-" + $1 }, 0),
+        "xʸ" : OperationType.BinaryOperation(pow, { $0 + " ^ " + $1 }, 2),
+        "=": OperationType.Equals
     ]
     
     func performOperation(symbol: String) {
@@ -132,32 +132,32 @@ class Calculator {
         }
     }
     
-    typealias PropertyList = AnyObject
-    
-    var program: PropertyList {
-        get {
-            return internalProgram as Calculator.PropertyList
-        } set {
-            clear()
-            if let arrayOfOps = newValue as? [AnyObject] {
-                for op in arrayOfOps {
-                    if let operand = op as? Double {
-                        setOperand(operand: operand)
-                    } else if let operation = op as? String {
-                        performOperation(symbol: operation)
-                    }
-                }
-            }
-        }
-    }
-    
+//    typealias PropertyList = AnyObject
+	
+//    var program: PropertyList {
+//        get {
+//            return internalProgram as Calculator.PropertyList
+//        } set {
+//            clear()
+//            if let arrayOfOps = newValue as? [AnyObject] {
+//                for op in arrayOfOps {
+//                    if let operand = op as? Double {
+//                        setOperand(operand: operand)
+//                    } else if let operation = op as? String {
+//                        performOperation(symbol: operation)
+//                    }
+//                }
+//            }
+//        }
+//    }
+	
     func clear() {
         accumulator = 0.0
         pending = nil
         descriptionAccumulator = " "
         currentPrecedence = Int.max
     }
-    
+	
     private var pending: PendingBinaryOperationInfo?
 
     private struct PendingBinaryOperationInfo {

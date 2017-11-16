@@ -21,7 +21,9 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	private var prevOp: String!
 	private var operationHistory: [MathematicalOperation]!
 	private var calculator: Calculator!
-	
+	private var managedContext: NSManagedObjectContext!
+	let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
 	private let EQUAL_SIGN_STR = "＝"
 	private let ERROR_STR = "  ERROR"
 	private let DELETE_SYMBOL = "\u{232B}"
@@ -47,37 +49,39 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		prevOp = String()
 		operandStack = [String]()
 		
+//		let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//		self.managedContext = appDelegate.persistentContainer.viewContext
+		
 		//  Create the refresh action for the table view so that we can clear the table view when the user pulls down on the table view
 		let clearHistoryControl = UIRefreshControl()
 		clearHistoryControl.addTarget(self, action: #selector(CalculatorViewController.clearHistory(refreshControl:)), for: .valueChanged)
 		self.operationHistoryTableView.allowsSelection = true
 		
-		DispatchQueue.main.async {
-			self.operationHistoryTableView.addSubview(clearHistoryControl)
+		self.operationHistoryTableView.addSubview(clearHistoryControl)
+		
+		self.operationHistoryTableView.delegate = self
+		self.operationHistoryTableView.dataSource = self
+		
+		//  Initialize all the buttons with the necessary actions when a certian action is executed
+		for button in self.buttonCollection {
+			UIApplication.shared.statusBarStyle = .lightContent
+			button.layer.borderWidth = 0.28
+			button.layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
+			button.addTarget(self, action: #selector(CalculatorViewController.buttontapped(sender:)), for: .touchDown)
+			button.addTarget(self, action: #selector(CalculatorViewController.buttontapped(sender:)), for: .touchDragInside)
+			button.addTarget(self, action: #selector(CalculatorViewController.buttonAction(sender:)), for: .touchDown)
+			button.addTarget(self, action: #selector(CalculatorViewController.buttonReleased(sender:)), for: .touchUpInside)
+			button.addTarget(self, action: #selector(CalculatorViewController.buttonReleased(sender:)), for: .touchDragExit)
 			
-			self.operationHistoryTableView.delegate = self
-			self.operationHistoryTableView.dataSource = self
-			
-			//  Initialize all the buttons with the necessary actions when a certian action is executed
-			for button in self.buttonCollection {
-				UIApplication.shared.statusBarStyle = .lightContent
-				button.layer.borderWidth = 0.28
-				button.layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
-				button.addTarget(self, action: #selector(CalculatorViewController.buttontapped(sender:)), for: .touchDown)
-				button.addTarget(self, action: #selector(CalculatorViewController.buttontapped(sender:)), for: .touchDragInside)
-				button.addTarget(self, action: #selector(CalculatorViewController.buttonAction(sender:)), for: .touchDown)
-				button.addTarget(self, action: #selector(CalculatorViewController.buttonReleased(sender:)), for: .touchUpInside)
-				button.addTarget(self, action: #selector(CalculatorViewController.buttonReleased(sender:)), for: .touchDragExit)
-				
-				//  Add a long press gesture recognizer to the clear button so that we can have both a clear and backspace action for the  button
-				if button.currentTitle == self.DELETE_SYMBOL {
-					let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(CalculatorViewController.clearOperationLabel(sender:)))
-					longPressRecognizer.minimumPressDuration = 0.19
-					button.addGestureRecognizer(longPressRecognizer)
-				}
+			//  Add a long press gesture recognizer to the clear button so that we can have both a clear and backspace action for the  button
+			if button.currentTitle == self.DELETE_SYMBOL {
+				let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(CalculatorViewController.clearOperationLabel(sender:)))
+				longPressRecognizer.minimumPressDuration = 0.19
+				button.addGestureRecognizer(longPressRecognizer)
 			}
-			self.buttonCollection.removeAll()
 		}
+		self.buttonCollection.removeAll()
+		
 	}
 	
 	@IBAction func solveButton(_ sender: UIButton) {
@@ -126,15 +130,22 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		answerLabel.text = FORMATTER.string(from: NSNumber.init(value: calculationResult))
 		
 		//  Add the operation to the history array so that the table view can be updated with accurate data
-		operationHistory.append(MathematicalOperation(result: calculationResult, operandStack: operandStack))
+		let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack, managedObjectContext: appDelegate.persistentContainer.viewContext)
+//		let operation = MathematicalOperation(result: calculationResult, operandStack: operandStack)
+		operationHistory.append(operation)
 		operationHistoryTableView.reloadData()
 		
-		//  Scroll to the bottom of the table view so taht the user can see all their most recent operation
+		
+		//  Scroll to the bottom of the table view so that the user can see all their most recent operation
 		if operationHistory.count > 3 {
 			let indexPath = NSIndexPath(row: operationHistory.count - 1, section: 0)
 			operationHistoryTableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
 		}
 		
+		DispatchQueue.global(qos: .background).async {
+			self.save(operation: operation)
+		}
+
 		operandStack.removeAll()
 		prevOp = opLabel.text!
 	}
@@ -260,7 +271,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		}
 		
 		//  Can't use 'updateOpLabel(text: String)' because we are updating the table view cell's label
-		for i in 0..<operationStr.characters.count {
+		for i in 0..<operationStr.count {
 			index = operationStr.index(operationStr.startIndex, offsetBy: i)
 			if OPS.contains(String(operationStr[index])) {
 				let attributedStringChar = NSAttributedString(string: String(operationStr[index]), attributes: self.ATTRIBUTE_GREEN)
@@ -280,8 +291,8 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 	
 	/*
 	* @param text, the string that is replacing the current label text
-	* Updates the operationLabel
-	* attributed text. This is done by iterating throught 'text'
+	* Updates the operationLabel attributed text. This is done by
+	* iterating throught 'text'
 	* and determining the type of character it is and applying
 	* the appropriate attribute to it
 	*/
@@ -293,7 +304,7 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 			attributedString.append(NSAttributedString(string: "  "))
 		}
 		
-		for i in 0..<text.characters.count {
+		for i in 0..<text.count {
 			index = text.index(text.startIndex, offsetBy: i)
 			if OPS.contains(String(text[index])) {
 				let attributedStringChar = NSAttributedString(string: String(text[index]), attributes: self.ATTRIBUTE_GREEN)
@@ -388,21 +399,28 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		}
 		
 		if character == "±" && opLabel.text != CLEAR_TEXT {
-			if opLabel.text?.characters.first == "-" {
-				self.updateOpLabel(text: String(opLabel.text!.characters.dropFirst()))
-				
+			if opLabel.text?.dropFirst(2).first == "-" {
+				self.updateOpLabel(text: "  " + String(describing: opLabel.text!.dropFirst(3)))
 			} else {
-				if opLabel.text!.characters.count <= 4 {
-					self.updateOpLabel(text: "  -\(String(opLabel.text!.characters.dropFirst(2)))")
+				if opLabel.text!.count <= 4  {
+					self.updateOpLabel(text: "  -\(String(opLabel.text!.dropFirst(2)))")
 				} else {
-					let end = opLabel.text?.characters.last
-					self.updateOpLabel(text: "\(String(opLabel.text!.characters.dropLast()))-\(end!)")
+					let split = opLabel.text?.split(separator: " ")
+					print(split![(split?.count)! - 1])
+					print(contains(seq: split![(split?.count)! - 1], char: "-"))
+					
+					if !contains(seq: split![(split?.count)! - 1], char: "-") {
+						self.updateOpLabel(text: "\(String(opLabel.text!.dropLast()))-\(String(describing: opLabel.text!.last!))")
+					} else {
+						let last = "\(String(describing: opLabel.text!.last!))"
+						self.updateOpLabel(text: "\(String(opLabel.text!.dropLast(2)))")
+					}
 				}
 			}
 			return
 		} else if character == "±" && opLabel.text == CLEAR_TEXT {
 			DispatchQueue.main.async {
-				self.opLabel.text = self.CLEAR_TEXT
+				self.opLabel.text = "  -"
 			}
 			return
 		}
@@ -424,13 +442,13 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		guard opLabel.text != CLEAR_TEXT && opLabel.text != ERROR_STR else { return }
 //		guard opLabel.text?.characters.count > 4 else { updateOpLabel(text: CLEAR_TEXT) }
 
-		if opLabel.text?.characters.count == 4 {
+		if opLabel.text?.count == 4 {
 			updateOpLabel(text: CLEAR_TEXT)
 			return
 		}
 	
-		if opLabel.text?.characters.last == " " {
-			updateOpLabel(text: String(opLabel.text!.characters.dropLast(2)))
+		if opLabel.text?.last == " " {
+			updateOpLabel(text: String(opLabel.text!.dropLast(2)))
 //			if operationLabel.text?.trimmingCharacters(in: .whitespaces) == "" {
 //				updateOpLabel(text: CLEAR_TEXT)
 //			}
@@ -466,23 +484,44 @@ class CalculatorViewController: UIViewController, UITableViewDataSource, UITable
 		}
 	}
 	
-	//  MARK: Core Data methods
+	private func contains(seq: String.SubSequence, char: Character) -> Bool {
+		for s in seq {
+			if s == char {
+				return true
+			}
+		}
+		return false
+ 	}
 	
-	func saveAttribute(attribute: String, key: String) {
-		let appDelegate = UIApplication.shared.delegate as! AppDelegate
-		
-		let managedContext = appDelegate.managedObjectContext
-		
-		let entity =  NSEntityDescription.entity(forEntityName: "OperationHistory", in: managedContext)
-		
+	//  MARK: Core Data methods
+	func save(operation: MathematicalOperation) {		
+		let entity = NSEntityDescription.entity(forEntityName: "Operation", in: managedContext)
 		let object = NSManagedObject(entity: entity!, insertInto: managedContext)
 		
-		object.setValue(attribute, forKey: key)
+		object.setValue(operation.getResult(), forKey: "operandstack")
+		object.setValue(operation.getOperandStack(), forKey: "result")
 		
 		do {
 			try managedContext.save()
-		} catch let error as NSError  {
-			print("Could not save context \(error), \(error.userInfo)")
+		} catch { NSLog("Could not save core data stack") }
+	}
+	
+	func read() {
+		let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Operation")
+
+		var fetchedObjects: [NSManagedObject]!
+		do {
+			try fetchedObjects = managedContext.fetch(fetchRequest) as! [NSManagedObject]
+		} catch { NSLog("Could not fetch data from core data stack") }
+
+		if let data = fetchedObjects {
+			for object in data {
+				operationHistory.append(MathematicalOperation(result: object.value(forKey: "result") as! Float64, operandStack: object.value(forKey: "operandstack") as! [String], managedObjectContext: managedContext))
+				operationHistoryTableView.reloadData()
+			}
+		} else {
+			print("Error reading data from core data stack")
 		}
 	}
 }
+
